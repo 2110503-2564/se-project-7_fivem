@@ -28,12 +28,12 @@ const SignIn = () => {
   };
 
   return (
-    <main className="min-h-screen bg-amber-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-amber-200">
+    <main className="min-h-screen bg-green-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-green-200">
         <div className="flex flex-col items-center mb-6">
-          <Tent className="h-10 w-10 text-amber-700 mb-2" />
-          <h1 className="text-2xl font-bold text-amber-900">Welcome Back</h1>
-          <p className="text-amber-600 text-sm">Sign in to your camping account</p>
+          <Tent className="h-10 w-10 text-green-700 mb-2" />
+          <h1 className="text-2xl font-bold text-green-900">Welcome Back</h1>
+          <p className="text-green-600 text-sm">Sign in to your camping account</p>
         </div>
 
         {error && (
@@ -44,13 +44,13 @@ const SignIn = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="flex items-center text-sm font-medium text-amber-700 mb-1">
+            <label className="flex items-center text-sm font-medium text-green-700 mb-1">
               <Mail className="mr-2 h-4 w-4" />
               Email
             </label>
             <input
               required
-              className="w-full px-3 py-2 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full px-3 py-2 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               type="email"
               placeholder="john@example.com"
               value={email}
@@ -59,13 +59,13 @@ const SignIn = () => {
           </div>
 
           <div>
-            <label className="flex items-center text-sm font-medium text-amber-700 mb-1">
+            <label className="flex items-center text-sm font-medium text-green-700 mb-1">
               <Lock className="mr-2 h-4 w-4" />
               Password
             </label>
             <input
               required
-              className="w-full px-3 py-2 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full px-3 py-2 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               type="password"
               placeholder="••••••••"
               value={password}
@@ -75,18 +75,18 @@ const SignIn = () => {
 
           <button
             type="submit"
-            className="w-full bg-[#8B5A2B] hover:bg-[#A67C52] text-white py-3 px-4 rounded-lg shadow-md transition-colors flex items-center justify-center"
+            className="w-full bg-green-700 hover:bg-green-600 text-white py-3 px-4 rounded-lg shadow-md transition-colors flex items-center justify-center"
           >
             <LogIn className="mr-2 h-4 w-4" />
             Sign In
           </button>
         </form>
 
-        <p className="text-center text-amber-700 mt-6">
+        <p className="text-center text-green-700 mt-6">
           Don't have an account?{" "}
           <Link 
             href="/signup" 
-            className="text-[#8B5A2B] hover:underline font-medium flex items-center justify-center"
+            className="text-green-800 hover:underline font-medium flex items-center justify-center"
           >
             <UserPlus className="mr-1 h-4 w-4" />
             Create Account
