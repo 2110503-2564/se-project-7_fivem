@@ -1,6 +1,7 @@
 "use client"; // Add this since we're using useState and useEffect
 import { useState, useEffect } from 'react';
 import Banner from '@/components/Banner';
+import Image from 'next/image';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,12 +19,17 @@ export default function Home() {
     <main className="relative min-h-screen">
       {/* Loading Overlay */}
       {isLoading && (
-        <div className="fixed inset-0 bg-white bg-opacity-90 z-50 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-600 mx-auto mb-4"></div>
-            <p className="text-xl font-medium text-amber-800">Loading your camping adventures...</p>
-          </div>
-        </div>
+        <div className="flex justify-center items-center min-h-screen bg-green-50">
+                <div className="animate-pulse flex flex-col items-center">
+                  <Image
+                    src={"/img/logo.png"}
+                    alt='Camping adventure'
+                    width={24}
+                    height={24}
+                    className="h-12 w-12 text-green-700 mb-4 animate-bounce" />
+                  <p className="text-green-800">Loading your campground adventures...</p>
+                </div>
+              </div>
       )}
 
       {/* Main Content */}

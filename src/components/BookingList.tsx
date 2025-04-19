@@ -8,6 +8,7 @@ import Link from "next/link";
 import deleteBooking from "@/libs/deleteBooking";
 import getUserProfile from "@/libs/getUserProfile";
 import { Tent, Calendar, MapPin, Trash2, Edit, User } from "lucide-react";
+import Image from "next/image";
 
 export default function BookingList() {
   const { data: session } = useSession();
@@ -72,7 +73,12 @@ export default function BookingList() {
     return (
       <div className="flex justify-center items-center min-h-screen bg-green-50">
         <div className="animate-pulse flex flex-col items-center">
-          <Tent className="h-12 w-12 text-green-700 mb-4 animate-bounce" />
+          <Image
+            src={"/img/logo.png"}
+            alt='Camping adventure'
+            width={24}
+            height={24}
+            className="h-12 w-12 text-green-700 mb-4 animate-bounce" />
           <p className="text-green-800">Loading your camping adventures...</p>
         </div>
       </div>
