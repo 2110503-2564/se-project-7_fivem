@@ -48,12 +48,12 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-amber-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-amber-200">
+    <main className="min-h-screen bg-green-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-green-200">
         <div className="flex flex-col items-center mb-6">
-          <Tent className="h-10 w-10 text-amber-700 mb-2" />
-          <h1 className="text-2xl font-bold text-amber-900">Create Account Campground</h1>
-          <p className="text-amber-600 text-sm">Join our camping community</p>
+          <Tent className="h-10 w-10 text-green-700 mb-2" />
+          <h1 className="text-2xl font-bold text-green-900">Create Account Campground</h1>
+          <p className="text-green-600 text-sm">Join our camping community</p>
         </div>
 
         {errors.form && (
@@ -64,14 +64,14 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="flex items-center text-sm font-medium text-amber-700 mb-1">
+            <label className="flex items-center text-sm font-medium text-green-700 mb-1">
               <User className="mr-2 h-4 w-4" />
               Full Name
             </label>
             <input
               required
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none ${
-                errors.name ? "border-red-500" : "border-amber-200 focus:ring-2 focus:ring-amber-500"
+                errors.name ? "border-red-500" : "border-green-200 focus:ring-2 focus:ring-green-500"
               }`}
               type="text"
               placeholder="John Doe"
@@ -82,14 +82,14 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="flex items-center text-sm font-medium text-amber-700 mb-1">
+            <label className="flex items-center text-sm font-medium text-green-700 mb-1">
               <Mail className="mr-2 h-4 w-4" />
               Email
             </label>
             <input
               required
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none ${
-                errors.email ? "border-red-500" : "border-amber-200 focus:ring-2 focus:ring-amber-500"
+                errors.email ? "border-red-500" : "border-green-200 focus:ring-2 focus:ring-green-500"
               }`}
               type="email"
               placeholder="john@example.com"
@@ -101,14 +101,14 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="flex items-center text-sm font-medium text-amber-700 mb-1">
+            <label className="flex items-center text-sm font-medium text-green-700 mb-1">
               <Phone className="mr-2 h-4 w-4" />
               Phone Number
             </label>
             <input
               required
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none ${
-                errors.tel ? "border-red-500" : "border-amber-200 focus:ring-2 focus:ring-amber-500"
+                errors.tel ? "border-red-500" : "border-green-200 focus:ring-2 focus:ring-green-500"
               }`}
               type="tel"
               placeholder="081-234-5678 or 0812345678"
@@ -124,14 +124,14 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="flex items-center text-sm font-medium text-amber-700 mb-1">
+            <label className="flex items-center text-sm font-medium text-green-700 mb-1">
               <Lock className="mr-2 h-4 w-4" />
               Password (min 6 characters)
             </label>
             <input
               required
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none ${
-                errors.password ? "border-red-500" : "border-amber-200 focus:ring-2 focus:ring-amber-500"
+                errors.password ? "border-red-500" : "border-green-200 focus:ring-2 focus:ring-green-500"
               }`}
               type="password"
               minLength={6}
@@ -147,7 +147,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#8B5A2B] hover:bg-[#A67C52] text-white py-3 px-4 rounded-lg shadow-md transition-colors disabled:bg-amber-300 flex items-center justify-center"
+            className="w-full bg-green-700 hover:bg-green-600 text-white py-3 px-4 rounded-lg shadow-md transition-colors disabled:bg-green-300 flex items-center justify-center"
           >
             {loading ? (
               <>
@@ -162,11 +162,11 @@ export default function RegisterPage() {
             )}
           </button>
         </form> 
-        <p className="text-center text-amber-700 mt-6 w-120">
+        <p className="text-center text-green-700 mt-6 w-120">
           Already have an account?{" "}
           <a
             href="/api/auth/signin"
-            className="text-[#8B5A2B] hover:underline font-medium flex items-center justify-center"
+            className="text-green-800 hover:underline font-medium flex items-center justify-center"
           >
             <LogIn className="mr-1 h-4 w-4" />
             Sign in
