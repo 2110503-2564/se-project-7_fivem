@@ -70,10 +70,10 @@ export default function BookingList() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-amber-50">
+      <div className="flex justify-center items-center min-h-screen bg-green-50">
         <div className="animate-pulse flex flex-col items-center">
-          <Tent className="h-12 w-12 text-amber-700 mb-4 animate-bounce" />
-          <p className="text-amber-800">Loading your camping adventures...</p>
+          <Tent className="h-12 w-12 text-green-700 mb-4 animate-bounce" />
+          <p className="text-green-800">Loading your camping adventures...</p>
         </div>
       </div>
     );
@@ -81,12 +81,12 @@ export default function BookingList() {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-amber-50">
-        <div className="bg-white p-8 rounded-xl shadow-md border-l-4 border-amber-600 max-w-md text-center">
-          <Tent className="h-10 w-10 text-amber-600 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-amber-800 mb-2">Oops!</h3>
-          <p className="text-amber-700 mb-4">{error}</p>
-          <Link href="/campground" className="text-amber-600 hover:text-amber-800 font-medium">
+      <div className="flex justify-center items-center min-h-screen bg-green-50">
+        <div className="bg-white p-8 rounded-xl shadow-md border-l-4 border-green-600 max-w-md text-center">
+          <Tent className="h-10 w-10 text-green-600 mx-auto mb-4" />
+          <h3 className="text-xl font-bold text-green-800 mb-2">Oops!</h3>
+          <p className="text-green-700 mb-4">{error}</p>
+          <Link href="/campground" className="text-green-600 hover:text-green-800 font-medium">
             Back to campgrounds
           </Link>
         </div>
@@ -97,21 +97,20 @@ export default function BookingList() {
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        {/* Wood-themed header */}
-        <div className="bg-[#5e3a1e] p-6">
-          <h1 className="text-2xl font-bold text-amber-100 flex items-center">
-            <Tent className="mr-3 h-8 w-8 text-amber-200" />
+        <div className="bg-green-700 p-6">
+          <h1 className="text-2xl font-bold text-green-100 flex items-center">
+            <Tent className="mr-3 h-8 w-8 text-green-200" />
             {role === 'admin' ? 'All Camping Reservations' : 'Your Camping Reservations'}
           </h1>
         </div>
 
         {bookItems.length === 0 ? (
-          <div className="text-center p-12 bg-amber-50">
-            <Tent className="h-12 w-12 text-amber-400 mx-auto mb-4" />
-            <p className="text-xl text-amber-800 font-medium mb-2">No bookings found</p>
+          <div className="text-center p-12 bg-green-50">
+            <Tent className="h-12 w-12 text-green-400 mx-auto mb-4" />
+            <p className="text-xl text-green-800 font-medium mb-2">No bookings found</p>
             <Link
               href="/campground"
-              className="mt-4 inline-flex items-center px-4 py-2 bg-[#8B5A2B] hover:bg-[#A67C52] text-amber-100 rounded-lg transition-colors"
+              className="mt-4 inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-green-50 rounded-lg transition-colors"
             >
               <MapPin className="mr-2 h-4 w-4" />
               Explore Campgrounds
@@ -120,71 +119,65 @@ export default function BookingList() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1000px] lg:min-w-0">
-              <thead className="bg-amber-100">
-                <tr className="text-amber-900 text-sm font-medium">
+              <thead className="bg-green-100">
+                <tr className="text-green-900 text-sm font-medium">
                   {role === 'admin' && (
                     <th className="p-4 text-left w-[200px]">
                       <div className="flex items-center">
-                        <User className="mr-2 h-4 w-4 text-amber-700" />
+                        <User className="mr-2 h-4 w-4 text-green-700" />
                         User ID
                       </div>
                     </th>
                   )}
                   <th className="p-4 text-left min-w-[200px]">
                     <div className="flex items-center">
-                      <Tent className="mr-2 h-4 w-4 text-amber-700" />
+                      <Tent className="mr-2 h-4 w-4 text-green-700" />
                       Campground
                     </div>
                   </th>
-                  <th className="p-4 text-left min-w-[150px]">
-                    Contact
-                  </th>
+                  <th className="p-4 text-left min-w-[150px]">Contact</th>
                   <th className="p-4 text-left min-w-[150px]">
                     <div className="flex items-center">
-                      <Calendar className="mr-2 h-4 w-4 text-amber-700" />
+                      <Calendar className="mr-2 h-4 w-4 text-green-700" />
                       Booking Date
                     </div>
                   </th>
-                  <th className="p-4 text-left min-w-[150px]">
-                    Created At
-                  </th>
-                  <th className="p-4 text-left min-w-[200px]">
-                    Actions
-                  </th>
+                  <th className="p-4 text-left min-w-[150px]">Created At</th>
+                  <th className="p-4 text-left min-w-[200px]">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-amber-200">
+              <tbody className="divide-y divide-green-200">
                 {bookItems.map((booking) => (
-                  <tr key={booking._id} className="hover:bg-amber-50 transition-colors">
+                  <tr key={booking._id} className="hover:bg-green-50 transition-colors">
                     {role === 'admin' && (
-                      <td className="p-4 text-amber-800 font-mono text-sm truncate max-w-[200px]">
+                      <td className="p-4 text-green-800 font-mono text-sm truncate max-w-[200px]">
                         {booking.user || "N/A"}
                       </td>
                     )}
-                    <td className="p-4 font-medium text-[#5e3a1e] min-w-[200px]">
+                    <td className="p-4 font-medium text-green-900 min-w-[200px]">
                       {booking.campground.name}
                     </td>
-                    <td className="p-4 text-amber-700 min-w-[150px]">
+                    <td className="p-4 text-green-700 min-w-[150px]">
                       {booking.campground.tel}
                     </td>
-                    <td className="p-4 text-amber-800 min-w-[150px]">
+                    <td className="p-4 text-green-800 min-w-[150px]">
                       {new Date(booking.apptDate).toLocaleDateString()}
                     </td>
-                    <td className="p-4 text-amber-800 min-w-[150px]">
+                    <td className="p-4 text-green-800 min-w-[150px]">
                       {new Date(booking.createdAt).toLocaleDateString()}
                     </td>
                     <td className="p-4 min-w-[200px]">
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/mybooking/${booking._id}/edit`}
-                          className="px-3 py-2 text-sm font-medium text-[#5e3a1e] hover:text-[#8B5A2B] hover:bg-amber-100 rounded-lg transition-colors flex items-center border border-amber-200"
+                          className="px-3 py-2 text-sm font-medium text-green-700 hover:text-green-900 hover:bg-green-100 rounded-lg transition-colors flex items-center border border-green-200"
                         >
                           <Edit className="mr-1 h-4 w-4" />
                           Edit
                         </Link>
                         <button
                           onClick={() => handleDelete(booking._id)}
-                          className="px-3 py-2 text-sm font-medium text-red-700 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors flex items-center border border-red-200"
+                          className="px-3 py-2 text-sm font-medium text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors flex items-center border border-red-200"
                         >
                           <Trash2 className="mr-1 h-4 w-4" />
                           Delete

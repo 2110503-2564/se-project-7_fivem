@@ -6,10 +6,9 @@ import DateReserve from "@/components/DateReserve";
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import updateBooking from "@/libs/updateBooking";
-import { Select, MenuItem, CircularProgress } from "@mui/material";
 import getCampgrounds from "@/libs/getCampgrounds";
+import { Select, MenuItem, CircularProgress } from "@mui/material";
 import { CampgroundItem } from "../../../../../interface";
-import { UpdateBookingData } from "../../../../../interface";
 import { Tent, Calendar, MapPin, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -37,7 +36,7 @@ export default function EditBookingPage() {
         setInitialLoading(false);
       }
     };
-    
+
     fetchData();
   }, []);
 
@@ -48,7 +47,7 @@ export default function EditBookingPage() {
       return;
     }
 
-    if (date.isBefore(dayjs().startOf('day'))) {
+    if (date.isBefore(dayjs().startOf("day"))) {
       setError("Cannot book a past date");
       return;
     }
@@ -56,12 +55,12 @@ export default function EditBookingPage() {
     try {
       setLoading(true);
       setError("");
-      
+
       await updateBooking(
         bookingid,
-        { 
+        {
           apptDate: date.toISOString(),
-          campground: selectedCampground
+          campground: selectedCampground,
         },
         session.user.token
       );
@@ -77,39 +76,43 @@ export default function EditBookingPage() {
 
   if (initialLoading) {
     return (
-      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
+      <div className="min-h-screen bg-green-50 flex items-center justify-center">
         <div className="text-center">
-          <CircularProgress className="text-amber-700" />
-          <p className="mt-4 text-amber-800">Loading booking information...</p>
+          <CircularProgress className="text-green-700" />
+          <p className="mt-4 text-green-800">Loading booking information...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-amber-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md border border-amber-200">
-        <Link href="/mybooking" className="flex items-center text-amber-700 hover:text-amber-900 mb-4">
+    <main className="min-h-screen bg-gradient-to-b from-green-50 to-green-100 text-gray-800 p-4 flex items-center justify-center">
+      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md border border-green-200">
+        <Link
+          href="/mybooking"
+          className="flex items-center text-green-700 hover:text-green-900 mb-4"
+        >
           <ArrowLeft className="mr-2 h-5 w-5" />
           Back to bookings
         </Link>
 
         <div className="flex items-center justify-center mb-6">
-          <Tent className="h-8 w-8 text-amber-700 mr-3" />
-          <h1 className="text-2xl font-bold text-amber-900">
+          <Tent className="h-8 w-8 text-green-700 mr-3" />
+          <h1 className="text-2xl font-bold text-green-900">
             Edit Reservation
           </h1>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm border border-red-200">
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm border border-red-300">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Select Campground */}
           <div>
-            <label className="block text-sm font-medium text-amber-700 mb-2 flex items-center">
+            <label className="block text-sm font-medium text-green-700 mb-2 flex items-center">
               <MapPin className="mr-2 h-4 w-4" />
               Campground
             </label>
@@ -117,24 +120,31 @@ export default function EditBookingPage() {
               fullWidth
               value={selectedCampground}
               onChange={(e) => setSelectedCampground(e.target.value)}
-              className="bg-amber-50"
+              className="bg-green-50"
               displayEmpty
               sx={{
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#d97706',
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#16a34a",
                 },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#b45309',
-                }
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#15803d",
+                },
               }}
               renderValue={(value) => {
-                if (!value) return <span className="text-amber-500">Select Campground</span>;
+                if (!value)
+                  return (
+                    <span className="text-green-500">Select Campground</span>
+                  );
                 const campground = campgrounds.find((cg) => cg._id === value);
-                return <span className="text-amber-900">{campground ? campground.name : "Not Found"}</span>;
+                return (
+                  <span className="text-green-900">
+                    {campground ? campground.name : "Not Found"}
+                  </span>
+                );
               }}
             >
               <MenuItem value="" disabled>
-                <span className="text-amber-500">Choose your campsite</span>
+                <span className="text-green-500">Choose your campsite</span>
               </MenuItem>
               {campgrounds.map((cg) => (
                 <MenuItem key={cg._id} value={cg._id}>
@@ -144,22 +154,24 @@ export default function EditBookingPage() {
             </Select>
           </div>
 
+          {/* Select Date */}
           <div>
-            <label className="block text-sm font-medium text-amber-700 mb-2 flex items-center">
+            <label className="block text-sm font-medium text-green-700 mb-2 flex items-center">
               <Calendar className="mr-2 h-4 w-4" />
               Booking Date
             </label>
             <DateReserve onDateChange={(value: Dayjs) => setDate(value)} />
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#8B5A2B] hover:bg-[#A67C52] text-amber-100 py-3 px-4 rounded-lg shadow-md transition-colors disabled:bg-amber-300 disabled:text-amber-50 flex items-center justify-center"
+            className="w-full bg-green-700 hover:bg-green-800 text-white py-3 px-4 rounded-lg shadow-md transition-colors disabled:bg-green-300 flex items-center justify-center"
           >
             {loading ? (
               <>
-                <CircularProgress size={20} className="text-amber-100 mr-2" />
+                <CircularProgress size={20} className="text-white mr-2" />
                 Updating...
               </>
             ) : (
@@ -168,6 +180,6 @@ export default function EditBookingPage() {
           </button>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
