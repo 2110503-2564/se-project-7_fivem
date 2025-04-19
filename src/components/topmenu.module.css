@@ -1,26 +1,25 @@
 .itemcontainer {
-    position: relative;
-    padding: 0.5rem 0;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-  
-  .underline {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #92400e; /* amber-800 */
-    transition: width 0.3s ease;
-  }
-  
-  .itemcontainer:hover .underline {
-    width: 100%;
-  }
-  
-  .itemcontainer:hover {
-    transform: translateY(-1px);
-  }
+  position: relative;
+  padding: 0.5rem 0;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
 
+.underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #15803d; /* green-800 */
+  transition: width 0.3s ease;
+}
+
+.itemcontainer:hover .underline {
+  width: 100%;
+}
+
+.itemcontainer:hover {
+  transform: translateY(-1px);
+}
