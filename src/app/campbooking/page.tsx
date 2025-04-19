@@ -41,7 +41,7 @@ export default function Page() {
         setLoading(false);
       }
     };
-    
+
     if (status === "authenticated") {
       fetchCampgrounds();
     }
@@ -49,8 +49,8 @@ export default function Page() {
 
   if (status === "loading") {
     return (
-      <div className="w-full min-h-screen flex flex-col items-center justify-center bg-amber-50">
-        <CircularProgress className="text-amber-700" />
+      <div className="w-full min-h-screen flex flex-col items-center justify-center bg-green-50">
+        <CircularProgress className="text-green-700" />
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function Page() {
       return;
     }
 
-    if (bookDate.isBefore(dayjs().startOf('day'))) {
+    if (bookDate.isBefore(dayjs().startOf("day"))) {
       setError("Cannot book a past date");
       return;
     }
@@ -74,7 +74,7 @@ export default function Page() {
     try {
       setSubmitting(true);
       setError("");
-      
+
       await createBooking(
         dayjs(bookDate).toDate(),
         campgroundId,
@@ -84,7 +84,6 @@ export default function Page() {
 
       router.push("/mybooking");
       alert("Booking created successfully!");
-      
     } catch (err) {
       console.error("Booking failed:", err);
       setError(err instanceof Error ? err.message : "Booking failed");
@@ -94,21 +93,16 @@ export default function Page() {
   };
 
   return (
-    <main className="w-full min-h-screen flex flex-col items-center justify-center bg-amber-50 p-4"
-      style={{
-        backgroundImage: "url('/img/camp-bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed"
-      }}
+    <main className="w-full min-h-screen flex flex-col items-center justify-center bg-green-50 bg-cover bg-center bg-fixed p-4"
+      style={{ backgroundImage: "url('/img/camp-bg.jpg')" }}
     >
-      <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-8 w-full max-w-md border border-amber-200">
+      <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-8 w-full max-w-md border border-green-200">
         <div className="flex flex-col items-center mb-6">
-          <Tent className="h-10 w-10 text-amber-700 mb-2" />
-          <h1 className="text-2xl font-bold text-center text-amber-900">
+          <Tent className="h-10 w-10 text-green-700 mb-2" />
+          <h1 className="text-2xl font-bold text-center text-green-900">
             Reserve Your Campsite
           </h1>
-          <p className="text-sm text-amber-600 mt-1">Sleep under the stars</p>
+          <p className="text-sm text-green-600 mt-1">Sleep under the stars</p>
         </div>
 
         {error && (
@@ -119,13 +113,13 @@ export default function Page() {
 
         {loading ? (
           <div className="text-center py-8">
-            <CircularProgress className="text-amber-700" />
-            <p className="mt-3 text-amber-700">Loading campgrounds...</p>
+            <CircularProgress className="text-green-700" />
+            <p className="mt-3 text-green-700">Loading campgrounds...</p>
           </div>
         ) : (
           <>
             <div className="mb-4">
-              <div className="flex items-center mb-2 text-sm text-amber-700">
+              <div className="flex items-center mb-2 text-sm text-green-700">
                 <MapPin className="mr-2 h-4 w-4" />
                 Select Campground
               </div>
@@ -134,16 +128,7 @@ export default function Page() {
                 fullWidth
                 value={campgroundId}
                 onChange={(e) => setCampgroundId(e.target.value)}
-                className="bg-amber-50"
-                displayEmpty
-                sx={{
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#d97706',
-                  },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#b45309',
-                  }
-                }}
+                className="bg-green-50 text-green-900 border border-green-300 rounded-md"
               >
                 <MenuItem value="" disabled>
                   Choose your campsite
@@ -157,7 +142,7 @@ export default function Page() {
             </div>
 
             <div className="mb-6">
-              <div className="flex items-center mb-2 text-sm text-amber-700">
+              <div className="flex items-center mb-2 text-sm text-green-700">
                 <Calendar className="mr-2 h-4 w-4" />
                 Select Dates
               </div>
@@ -166,27 +151,21 @@ export default function Page() {
               />
             </div>
 
-            <Button
-              variant="contained"
-              fullWidth
-              className="bg-gradient-to-r from-amber-600 to-green-600 hover:from-amber-700 hover:to-green-700 text-brown-400 font-medium py-3 rounded-lg shadow-md transition-all duration-300"
+            <button
               onClick={handleBooking}
               disabled={submitting || !campgroundId || !bookDate}
-              sx={{
-                textTransform: 'none',
-                fontSize: '1rem',
-                '&:disabled': {
-                  background: '#d1d5db',
-                  color: '#6b7280'
-                }
-              }}
+              className={`w-full py-3 rounded-lg shadow-md font-medium text-white transition-all duration-300 ${
+                submitting || !campgroundId || !bookDate
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
+              }`}
             >
               {submitting ? (
-                <CircularProgress size={24} className="text-brown-400" />
+                <CircularProgress size={24} className="text-white" />
               ) : (
                 "Book Now"
               )}
-            </Button>
+            </button>
           </>
         )}
       </div>
