@@ -52,7 +52,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-amber-200">
         <div className="flex flex-col items-center mb-6">
           <Tent className="h-10 w-10 text-amber-700 mb-2" />
-          <h1 className="text-2xl font-bold text-amber-900">Create Account</h1>
+          <h1 className="text-2xl font-bold text-amber-900">Create Account Campground</h1>
           <p className="text-amber-600 text-sm">Join our camping community</p>
         </div>
 
