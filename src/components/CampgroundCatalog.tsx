@@ -75,7 +75,6 @@ export default async function CampgroundCatalog({ campgroundsJson }: { campgroun
                                     campgroundName={campground.name}
                                     tel={campground.tel}
                                     address={campground.address}
-                                    className='bg-white/95 backdrop-blur-sm border border-white/30 group-hover:border-amber-300 transition-all rounded-xl overflow-hidden shadow-lg hover:shadow-xl h-full'
                                 />
                             </Link>
                         ))}
