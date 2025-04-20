@@ -7,7 +7,7 @@ export default function CampgroundPage() {
   const campgrounds =  getCampgrounds();
   return (
     <>
-    
+  
     <Suspense fallback={ <p className="text-center">Loading... <LinearProgress/></p> }>
             <CampgroundCatalog campgroundsJson={campgrounds}/>                
     </Suspense>

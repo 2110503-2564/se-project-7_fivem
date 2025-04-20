@@ -25,6 +25,7 @@ export default async function CampgroundCatalog({ campgroundsJson }: { campgroun
             </div>
         </div>
     );
+    
 
     return (
         <div className='min-h-screen relative'>

@@ -4,7 +4,7 @@ import CreateCampgroundForm from "../../components/CreateCampgroundForm";
 import UpdateDeleteCampground from "@/components/ManageCampground";
 
 const CreateCampgroundPage = () => {
-  const [view, setView] = useState("");
+  const [view, setView] = useState("create");
 
   return (
     <div className="container mx-auto py-8 px-4 bg-green-50 flex flex-col space-y-6">
@@ -16,7 +16,6 @@ const CreateCampgroundPage = () => {
           onChange={(e) => setView(e.target.value)}
           className="border border-gray-300 rounded px-4 py-2 w-full shadow"
         >
-          <option value="">--- Choose your option ---</option>
           <option value="create">Create Campground</option>
           <option value="manage">Manage Campground</option>
         </select>
