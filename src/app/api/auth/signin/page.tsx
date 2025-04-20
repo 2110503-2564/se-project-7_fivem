@@ -3,7 +3,8 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from 'next/link';
-import { Tent, LogIn, Mail, Lock, UserPlus } from "lucide-react";
+import { LogIn, Mail, Lock, UserPlus } from "lucide-react";
+import Image from "next/image";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -31,7 +32,12 @@ const SignIn = () => {
     <main className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-green-200">
         <div className="flex flex-col items-center mb-6">
-          <Tent className="h-10 w-10 text-green-700 mb-2" />
+          <Image
+            src='/img/logo.png'
+            alt="logo"
+            width={24}
+            height={24}
+            className="h-10 w-10 mb-2"/>
           <h1 className="text-2xl font-bold text-green-900">Welcome Back</h1>
           <p className="text-green-600 text-sm">Sign in to your camping account</p>
         </div>

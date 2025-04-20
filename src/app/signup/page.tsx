@@ -2,7 +2,8 @@
 import { useState } from "react";
 import userRegister from "@/libs/userRegister";
 import { useRouter } from "next/navigation";
-import { Tent, User, Mail, Phone, Lock, LogIn } from "lucide-react";
+import { User, Mail, Phone, Lock, LogIn } from "lucide-react";
+import Image from "next/image";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -51,7 +52,12 @@ export default function RegisterPage() {
     <main className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-green-200">
         <div className="flex flex-col items-center mb-6">
-          <Tent className="h-10 w-10 text-green-700 mb-2" />
+          <Image
+            src='/img/logo.png'
+            alt="logo"
+            width={24}
+            height={24}
+            className="h-10 w-10 mb-2"/>
           <h1 className="text-2xl font-bold text-green-900">Create Account Campground</h1>
           <p className="text-green-600 text-sm">Join our camping community</p>
         </div>

@@ -1,9 +1,10 @@
 "use client";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Tent, LogOut, ArrowLeft } from "lucide-react";
+import { LogOut, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 
 const SignOut = () => {
   const router = useRouter();
@@ -42,8 +43,13 @@ const SignOut = () => {
         }`}
       >
         <div className="flex flex-col items-center mb-6">
-          <Tent className="h-10 w-10 text-green-700 mb-2" />
-          <h1 className="text-2xl font-bold text-green-900">Ready to Leave?</h1>
+          <Image
+            src='/img/logo.png'
+            alt="logo"
+            width={24}
+            height={24}
+            className="h-10 w-10 mb-2"/>          
+            <h1 className="text-2xl font-bold text-green-900">Ready to Leave?</h1>
           <p className="text-green-600 text-sm">
             We hope to see you back soon for more adventures
           </p>

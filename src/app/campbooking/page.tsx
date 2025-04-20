@@ -9,7 +9,8 @@ import getCampgrounds from "@/libs/getCampgrounds";
 import createBooking from "@/libs/createBooking";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Tent, Calendar, MapPin } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
+import Image from "next/image";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -98,7 +99,12 @@ export default function Page() {
     >
       <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-8 w-full max-w-md border border-green-200">
         <div className="flex flex-col items-center mb-6">
-          <Tent className="h-10 w-10 text-green-700 mb-2" />
+          <Image
+            src='/img/logo.png'
+            alt="logo"
+            width={24}
+            height={24}
+            className="h-10 w-10 mb-2"/>
           <h1 className="text-2xl font-bold text-center text-green-900">
             Reserve Your Campsite
           </h1>

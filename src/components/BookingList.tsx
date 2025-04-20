@@ -89,7 +89,12 @@ export default function BookingList() {
     return (
       <div className="flex justify-center items-center min-h-screen bg-green-50">
         <div className="bg-white p-8 rounded-xl shadow-md border-l-4 border-green-600 max-w-md text-center">
-          <Tent className="h-10 w-10 text-green-600 mx-auto mb-4" />
+          <Image
+            src='/img/logo.png'
+            alt="logo"
+            width={24}
+            height={24}
+            className="h-10 w-10 mx-auto mb-4"/>
           <h3 className="text-xl font-bold text-green-800 mb-2">Oops!</h3>
           <p className="text-green-700 mb-4">{error}</p>
           <Link href="/campground" className="text-green-600 hover:text-green-800 font-medium">

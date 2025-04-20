@@ -32,7 +32,12 @@ export default function Banner() {
       
       <div className={styles.BannerText}>
         <div className="flex items-center justify-center gap-3 mb-4">
-          <Tent className="h-10 w-10 text-green-200" />
+          <Image
+            src='/img/logo.png'
+            alt='logo'
+            width={24}
+            height={24}
+            className="h-10 w-10 text-green-200" />
           <h1 className='text-5xl font-bold text-green-50 drop-shadow-lg font-serif'>
             Your Wilderness Escape
           </h1>
