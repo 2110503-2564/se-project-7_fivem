@@ -30,24 +30,36 @@ export default function CampgroundCatalog() {
         fetchCampgrounds();
     }, []);
 
-    if (!success) return (
-        <div className='min-h-screen bg-stone-50 flex items-center justify-center p-6'>
-            <div className='bg-white p-8 rounded-xl shadow-lg border border-stone-200 max-w-md w-full text-center'>
-                <div className='animate-bounce'>
-                    <Mountain className='h-12 w-12 text-amber-600 mx-auto mb-4' />
-                </div>
-                <h3 className='text-2xl font-bold text-stone-800 mb-3'>Connection Lost</h3>
-                <p className='text-stone-600 mb-6'>We couldn't reach the campground database</p>
-                <button 
-                    onClick={() => window.location.reload()}
-                    className='flex items-center justify-center gap-2 mx-auto px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-all shadow-md hover:shadow-lg'
-                >
-                    <RefreshCw className='h-4 w-4' />
-                    Retry Connection
-                </button>
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center text-stone-700 text-xl">
+                Loading...
             </div>
-        </div>
-    );
+        );
+    }
+
+    if (error || !data) {
+        return (
+            <div className='min-h-screen bg-stone-50 flex items-center justify-center p-6'>
+                <div className='bg-white p-8 rounded-xl shadow-lg border border-stone-200 max-w-md w-full text-center'>
+                    <div className='animate-bounce'>
+                        <Mountain className='h-12 w-12 text-amber-600 mx-auto mb-4' />
+                    </div>
+                    <h3 className='text-2xl font-bold text-stone-800 mb-3'>Connection Lost</h3>
+                    <p className='text-stone-600 mb-6'>We couldn't reach the campground database</p>
+                    <button 
+                        onClick={fetchCampgrounds}
+                        className='flex items-center justify-center gap-2 mx-auto px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-all shadow-md hover:shadow-lg'
+                    >
+                        <RefreshCw className='h-4 w-4' />
+                        Retry Connection
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    const { count, data: campgrounds } = data;
 
     return (
         <div className='min-h-screen relative'>
@@ -96,6 +108,7 @@ export default function CampgroundCatalog() {
                                     campgroundName={campground.name}
                                     tel={campground.tel}
                                     address={campground.address}
+                                    className='bg-white/95 backdrop-blur-sm border border-white/30 group-hover:border-amber-300 transition-all rounded-xl overflow-hidden shadow-lg hover:shadow-xl h-full'
                                 />
                             </Link>
                         ))}
