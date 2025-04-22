@@ -17,6 +17,7 @@ import {
   Navigation,
   Phone,
   Mailbox,
+  Coins
 } from "lucide-react";
 
 const regions = ["North", "South", "East", "West", "Central", "North East"];
@@ -31,6 +32,7 @@ const CreateCampgroundForm: React.FC = () => {
     postalcode: "",
     tel: "",
     region: "",
+    price: "", 
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -69,6 +71,7 @@ const CreateCampgroundForm: React.FC = () => {
         postalcode: "",
         tel: "",
         region: "",
+        price: "",
       });
     } catch (err) {
       setError(
@@ -167,6 +170,24 @@ const CreateCampgroundForm: React.FC = () => {
               type="tel"
             />
           </div>
+        </div>
+
+        {/* ฟิลด์ใหม่สำหรับราคาของแคมป์กราวน์ */}
+        <div className="space-y-1">
+          <label className="flex items-center text-sm font-medium text-green-700">
+            <Coins className="mr-2 h-4 w-4" />
+            Price (฿)
+          </label>
+          <TextField
+            fullWidth
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            size="small"
+            inputProps={{
+              inputMode: "decimal",
+            }}
+          />
         </div>
 
         <FormControl fullWidth size="small">

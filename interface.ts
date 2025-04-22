@@ -7,6 +7,7 @@ export interface CampgroundItem {
   postalcode: string;
   tel: string;
   region: string;
+  price: number;
 }
 
 export interface CampgroundResponse {
@@ -21,6 +22,7 @@ export interface CampgroundResponse {
     tel: string;
     region: string;
     __v: number;
+    price: number;
   };
 }
 

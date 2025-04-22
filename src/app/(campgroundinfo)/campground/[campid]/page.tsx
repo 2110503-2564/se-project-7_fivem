@@ -174,7 +174,7 @@ export default function CampgroundDetailPage({ params }: { params: { campid: str
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap gap-4 pt-4">
+            <div className="flex flex-wrap justify-between gap-4 pt-4">
               <Link 
                 href={`/campbooking?id=${params.campid}`}
                 className="px-6 py-3 bg-green-700 hover:bg-green-800 text-white font-medium rounded-lg transition-all flex items-center shadow-md hover:shadow-lg"
@@ -182,6 +182,9 @@ export default function CampgroundDetailPage({ params }: { params: { campid: str
                 <Tent className="mr-2 h-5 w-5" />
                 Book Now
               </Link>
+              <div className='mr-4 flex items-center text-2xl text-green-800'>
+                ฿ {campgroundDetail.data.price}
+              </div>
             </div>
           </div>
         </div>

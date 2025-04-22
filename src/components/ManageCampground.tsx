@@ -20,6 +20,7 @@ import {
   Navigation,
   Phone,
   Mailbox,
+  Coins
 } from "lucide-react";
 
 const UpdateDeleteCampground: React.FC = () => {
@@ -35,10 +36,12 @@ const UpdateDeleteCampground: React.FC = () => {
     postalcode: "",
     tel: "",
     region: "",
+    price: 0,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
+  
 
   useEffect(() => {
     const fetchCampgrounds = async () => {
@@ -70,6 +73,7 @@ const UpdateDeleteCampground: React.FC = () => {
         postalcode: "",
         tel: "",
         region: "",
+        price: 0, 
       });
     }
   }, [selectedCampground, campgrounds]);
@@ -131,6 +135,7 @@ const UpdateDeleteCampground: React.FC = () => {
         postalcode: "",
         tel: "",
         region: "",
+        price: 0, // รีเซ็ตฟิลด์ price
       });
     } catch (err) {
       setError("Failed to delete campground");
@@ -291,35 +296,23 @@ const UpdateDeleteCampground: React.FC = () => {
             </div>
           </div>
 
-          {/* Region select */}
-          <FormControl fullWidth size="small">
-            <label className="flex items-center text-sm font-medium text-green-700 mb-1">
-              <Navigation className="mr-2 h-4 w-4" />
-              Region
+          {/* Price */}
+          <div className="space-y-1">
+            <label className="flex items-center text-sm font-medium text-green-700">
+              <Coins className="mr-2 h-4 w-4" />
+              Price
             </label>
-            <Select
-              name="region"
-              value={formData.region}
-              onChange={(e) =>
-                setFormData({ ...formData, region: e.target.value })
-              }
-              className="bg-green-50 text-green-900 border border-green-300 rounded-md"
-            >
-              {[
-                "North",
-                "South",
-                "East",
-                "West",
-                "Central",
-                "North East",
-              ].map((region) => (
-                <MenuItem key={region} value={region}>
-                  {region}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
+            <TextField
+              fullWidth
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              size="small"
+              inputProps={{
+                pattern: "^[0-9]*\\.?[0-9]+$",
+              }}
+            />
+          </div>
           {/* Buttons */}
           <div className="flex justify-between gap-4">
             <button
