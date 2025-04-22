@@ -1,11 +1,34 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import getCampgrounds from '@/libs/getCampgrounds';
 import Card from '@/components/Card';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CampgroundJson } from "../../interface";
-import { Trees, Mountain, MapPin, Compass, RefreshCw, Tent } from 'lucide-react';
+import { CampgroundJson } from '../../interface';
+import { Mountain, MapPin, Compass, RefreshCw, Tent } from 'lucide-react';
 
-export default async function CampgroundCatalog({ campgroundsJson }: { campgroundsJson: Promise<CampgroundJson> }) {
-    const { success, count, data } = await campgroundsJson;
+export default function CampgroundCatalog() {
+    const [data, setData] = useState<CampgroundJson | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    const fetchCampgrounds = async () => {
+        try {
+            setLoading(true);
+            const result = await getCampgrounds();
+            setData(result);
+            setError(!result.success);
+        } catch (err) {
+            setError(true);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchCampgrounds();
+    }, []);
 
     if (!success) return (
         <div className='min-h-screen bg-stone-50 flex items-center justify-center p-6'>
@@ -25,11 +48,10 @@ export default async function CampgroundCatalog({ campgroundsJson }: { campgroun
             </div>
         </div>
     );
-    
 
     return (
         <div className='min-h-screen relative'>
-            {/* Optimized Background Image */}
+            {/* Background */}
             <div className="fixed inset-0 -z-10">
                 <div className="absolute inset-0 bg-gradient-to-b from-green-900/40 to-green-900/70"></div>
                 <Image 
@@ -39,9 +61,7 @@ export default async function CampgroundCatalog({ campgroundsJson }: { campgroun
                     priority
                     quality={80}
                     className="object-cover"
-                    style={{
-                        objectPosition: 'center center'
-                    }}
+                    style={{ objectPosition: 'center center' }}
                 />
             </div>
 
@@ -62,11 +82,11 @@ export default async function CampgroundCatalog({ campgroundsJson }: { campgroun
                 </div>
             </header>
 
-            {/* Main Content - Wider Grid */}
+            {/* Campground Grid */}
             <main className='relative py-12 px-4 sm:px-8 max-w-[1800px] mx-auto'>
                 {count > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
-                        {data.map((campground) => (
+                        {campgrounds.map((campground) => (
                             <Link 
                                 href={`/campground/${campground._id}`}
                                 key={campground._id}
@@ -93,7 +113,7 @@ export default async function CampgroundCatalog({ campgroundsJson }: { campgroun
                 )}
             </main>
 
-            {/* Bottom Gradient Fade */}
+            {/* Bottom Gradient */}
             <div className='fixed bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-green-900/50 to-transparent pointer-events-none'></div>
         </div>
     );
