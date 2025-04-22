@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { CampgroundJson } from '../../interface';
 import { Mountain, MapPin, Compass, RefreshCw, Tent } from 'lucide-react';
+import { CircularProgress } from '@mui/material';
 
 export default function CampgroundCatalog() {
     const [data, setData] = useState<CampgroundJson | null>(null);
@@ -32,8 +33,11 @@ export default function CampgroundCatalog() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-stone-700 text-xl">
-                Loading...
+            <div className="flex justify-center items-center min-h-screen bg-green-50">
+                <div className="flex flex-col items-center">
+                    <CircularProgress size={50} color="success" className="mb-4" />
+                    <p className="text-green-800">Loading your campground adventures...</p>
+                </div>
             </div>
         );
     }
