@@ -73,6 +73,41 @@ export interface SessionUser {
   token: string;
 }
 
+export interface PaymentMethod {
+  _id: string;
+  user: string; // Or `User` if populated
+  name: string;
+  method: "credit_card" | "bank_account";
+  cardFingerprint?: string;
+  bankAccountFingerprint?: string;
+  bankName?: 
+    | "KBank"
+    | "SCB"
+    | "BBL"
+    | "Krungsri"
+    | "KTB"
+    | "TTB"
+    | "BAAC"
+    | "GSB"
+    | "CIMB"
+    | "UOB";
+  createdAt: string;
+}
+
+
+export interface Transaction {
+  _id: string;
+  user: string | User; // Use `User` if populated
+  booking: BookingItem | string;
+  campground: CampgroundItem | string;
+  paymentMethod: PaymentMethod | string;
+  amount: number;
+  status: string;
+  transactionDate: string;
+  paidAt?: string;
+}
+
+
 export interface CampgroundWithBookings extends CampgroundItem {
   bookings: BookingItem[];
 }
