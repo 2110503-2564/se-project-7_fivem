@@ -21,7 +21,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [selectedCampground, setSelectedCampground] = useState(null);
+  const [selectedCampground, setSelectedCampground] = useState<CampgroundItem | null>(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -94,12 +94,12 @@ export default function Page() {
     }
   };
 
-  const handleCampgroundChange = (e) => {
+  const handleCampgroundChange = (e : any) => {
     const selectedId = e.target.value;
     setCampgroundId(selectedId);
   
     const selectedCg = campgrounds.find((cg) => cg._id === selectedId);
-    setSelectedCampground(selectedCg);
+    setSelectedCampground(selectedCg ?? null);
   };
 
   return (
