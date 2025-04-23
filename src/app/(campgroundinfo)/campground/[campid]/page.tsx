@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import getCampground from '@/libs/getCampground';
 import { CampgroundResponse } from '../../../../../interface';
-import { MapPin, Mountain, Trees, Phone, ArrowLeft, Landmark, Navigation, Mailbox, Tent, Globe, Star } from 'lucide-react';
+import { MapPin, Mountain, Trees, Phone, ArrowLeft, Landmark, Navigation, Mailbox, Tent, Globe, Star, LetterText, MailCheck } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -164,10 +164,10 @@ export default function CampgroundDetailPage({ params }: { params: { campid: str
                       </a>
                     }
                   />
-                  <DetailItem 
-                    icon={<Tent className="h-5 w-5" />}
-                    label="Availability"
-                    value="12 sites available"
+                  <DetailItem
+                      icon={<MailCheck className="mr-2 h-5 w-5" />}
+                      label="Gmail"
+                      value={`${campgroundDetail.data.name.replace(/\s+/g, '')}@gmail.com`}
                   />
                 </div>
               </div>
