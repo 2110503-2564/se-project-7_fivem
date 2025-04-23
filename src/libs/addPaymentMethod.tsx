@@ -4,7 +4,7 @@ export async function addPaymentMethod(
   methodData: Partial<PaymentMethod>,
   token: string
 ): Promise<PaymentMethod> {
-  const res = await fetch(`${process.env.BACKEND_URL}/api/payment-methods`, {
+  const res = await fetch(`${process.env.BACKEND_URL}/api/v1/paymentmethod`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

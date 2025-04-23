@@ -3,7 +3,7 @@ import { Transaction } from "../../interface"; // Assuming you have a Transactio
 
 export const getTransaction = async (id: string, token: string): Promise<Transaction | null> => {
   try {
-    const res = await fetch(`${process.env.BACKEND_URL}/api/v1/transactions/${id}`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/v1/transaction/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
