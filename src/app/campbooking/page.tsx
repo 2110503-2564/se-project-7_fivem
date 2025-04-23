@@ -9,7 +9,7 @@ import getCampgrounds from "@/libs/getCampgrounds";
 import createBooking from "@/libs/createBooking";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Calendar, MapPin } from "lucide-react";
+import { Calendar, MapPin, Coins } from "lucide-react";
 import Image from "next/image";
 
 export default function Page() {
@@ -21,6 +21,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [selectedCampground, setSelectedCampground] = useState(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -93,6 +94,14 @@ export default function Page() {
     }
   };
 
+  const handleCampgroundChange = (e) => {
+    const selectedId = e.target.value;
+    setCampgroundId(selectedId);
+  
+    const selectedCg = campgrounds.find((cg) => cg._id === selectedId);
+    setSelectedCampground(selectedCg);
+  };
+
   return (
     <main className="w-full min-h-screen flex flex-col items-center justify-center bg-green-50 bg-cover bg-center bg-fixed p-4"
       style={{ backgroundImage: "url('/img/camp-bg.jpg')" }}
@@ -133,7 +142,7 @@ export default function Page() {
                 variant="outlined"
                 fullWidth
                 value={campgroundId}
-                onChange={(e) => setCampgroundId(e.target.value)}
+                onChange={handleCampgroundChange}
                 className="bg-green-50 text-green-900 border border-green-300 rounded-md"
               >
                 <MenuItem value="" disabled>
@@ -147,8 +156,8 @@ export default function Page() {
               </Select>
             </div>
 
-            <div className="mb-6">
-              <div className="flex items-center mb-2 text-sm text-green-700">
+            <div>
+              <div className="flex items-center text-sm text-green-700">
                 <Calendar className="mr-2 h-4 w-4" />
                 Select Dates
               </div>
@@ -156,6 +165,24 @@ export default function Page() {
                 onDateChange={(value: Dayjs) => setBookDate(value)}
               />
             </div>
+
+            <div className="mb-6">
+              <div className="flex items-center mb-2 text-sm text-green-700">
+                <Coins className="mr-2 h-4 w-4" />
+                Price
+              </div>
+              <input
+                type="text"
+                readOnly
+                className="w-full border border-green-300 bg-green-50 p-3 text-green-900 shadow-sm focus:outline-none"
+                value={
+                  selectedCampground?.price
+                    ? `${selectedCampground.price.toLocaleString()} บาท`
+                    : "0 บาท"
+                }                
+              />
+            </div>
+
 
             <button
               onClick={handleBooking}
