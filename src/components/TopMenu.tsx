@@ -53,11 +53,21 @@ export default function TopMenu() {
           </div>
         </Link>
 
+        {role === "user" && (
         <TopMenuItem 
           title="My Bookings" 
           pageRef="/mybooking" 
           icon={<Calendar className="mr-1 h-4 w-4" />} 
         />
+        )}
+
+        {role === "admin" && (
+        <TopMenuItem 
+          title="All Bookings" 
+          pageRef="/mybooking" 
+          icon={<Calendar className="mr-1 h-4 w-4" />} 
+        />
+        )}
 
         <TopMenuItem 
           title="Book Now" 
