@@ -5,13 +5,14 @@ import Link from "next/link";
 import TopMenuItem from "./TopMenuItem";
 import getUserProfile from "@/libs/getUserProfile";
 import Image from "next/image";
-import { Tent, MapPin, Calendar, LogIn, LogOut, UserPlus } from "lucide-react";
+import { Tent, MapPin, Calendar, LogIn, LogOut, UserPlus, CircleUserRound } from "lucide-react";
 
 export default function TopMenu() {
   const { data: session } = useSession();
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
+  const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -19,6 +20,7 @@ export default function TopMenu() {
         try {
           const userProfile = await getUserProfile(session.user.token);
           setRole(userProfile.data.role);
+          setUserName(userProfile.data.name);
         } catch (error) {
           console.error("Failed to load user profile:", error);
           setError("Failed to load user profile");
@@ -75,13 +77,20 @@ export default function TopMenu() {
       </div>
 
       <div className="flex items-center space-x-4">
-        {session ? (
+        {session ? (<div className="flex space-x-4">
+          <Link href="/userinfo">
+            <button className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-300">
+              <CircleUserRound className="w-5 h-5" />
+              <span>{userName}</span>
+            </button>
+          </Link>
           <Link href="/signout">
             <button className="flex items-center bg-green-700 hover:bg-green-800 text-green-50 font-medium py-2 px-4 rounded-lg transition duration-300 border border-green-800">
               <LogOut className="mr-2 h-4 w-4" />
               Sign Out
             </button>
           </Link>
+        </div>
         ) : (
           <>
             <Link href="/api/auth/signin">
