@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { addPaymentMethod } from '@/libs/addPaymentMethod'; // สมมติว่าเก็บฟังก์ชันนี้ที่ services
+import { addPaymentMethod } from '@/libs/addPaymentMethod';
 import { PaymentMethod as PaymentMethodType } from '../../interface';
 import { useSession } from "next-auth/react";
+import { CreditCard, Landmark, Hash } from 'lucide-react';
+import { TextField, Select, MenuItem, FormControl, Button } from '@mui/material';
 
 function AddPaymentMethod() {
   const { data: session } = useSession();
@@ -16,7 +18,7 @@ function AddPaymentMethod() {
     bankName: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<any>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -43,7 +45,6 @@ function AddPaymentMethod() {
       alert('Payment method added successfully');
       console.log('Added payment method:', newPaymentMethod);
 
-      // เคลียร์ฟอร์มหลังจาก submit
       setFormData({
         name: '',
         label: '',
@@ -60,94 +61,128 @@ function AddPaymentMethod() {
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Add Payment Method</h2>
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-1 font-medium">Type</label>
-          <select
-            value={method}
-            onChange={(e : any) => setMethod(e.target.value)}
-            required
-            className="w-full border rounded p-2"
-          >
-            <option value="">Select Method</option>
-            <option value="credit_card">Credit Card</option>
-            <option value="bank_account">Bank Account</option>
-          </select>
+    <div className="w-full p-8 bg-white rounded-xl shadow-lg border border-green-200">
+      <div className="flex items-center justify-center mb-6">
+        <CreditCard className="h-8 w-8 text-green-700 mr-3" />
+        <h2 className="text-2xl font-bold text-green-900">Add Payment Method</h2>
+      </div>
+
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        {/* Type */}
+        <div className="space-y-1">
+          <label className="flex items-center text-sm font-medium text-green-700">
+            <Hash className="mr-2 h-4 w-4" />
+            Method Type
+          </label>
+          <FormControl fullWidth size="small">
+            <Select
+              value={method}
+              onChange={(e) => setMethod(e.target.value as any)}
+              displayEmpty
+              className="bg-green-50 text-green-900 border border-green-300 rounded-md"
+            >
+              <MenuItem value=""><span className='text-gray-400'>Select method</span></MenuItem>
+              <MenuItem value="credit_card">Credit Card</MenuItem>
+              <MenuItem value="bank_account">Bank Account</MenuItem>
+            </Select>
+          </FormControl>
         </div>
 
-        <div>
-          <label className="block mb-1 font-medium">Name</label>
-          <input
-            type="text"
+        {/* Name */}
+        <div className="space-y-1">
+          <label className="flex items-center text-sm font-medium text-green-700">
+            <CreditCard className="mr-2 h-4 w-4" />
+            Payment Method Name
+          </label>
+          <TextField
+            fullWidth
+            size="small"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            required
-            className="w-full border rounded p-2"
+            placeholder="Enter payment name"
           />
         </div>
 
+        {/* Card Number */}
         {method === 'credit_card' && (
-          <div>
-            <label className="block mb-1 font-medium">Card Number</label>
-            <input
-              type="text"
+          <div className="col-span-2 space-y-1">
+            <label className="flex items-center text-sm font-medium text-green-700">
+              <CreditCard className="mr-2 h-4 w-4" />
+              Card Number
+            </label>
+            <TextField
+              fullWidth
+              size="small"
               name="cardNumber"
               value={formData.cardNumber}
               onChange={handleChange}
-              required
-              className="w-full border rounded p-2"
+              placeholder="Enter card number"
             />
           </div>
         )}
 
+        {/* Bank Account Details */}
         {method === 'bank_account' && (
           <>
-            <div>
-              <label className="block mb-1 font-medium">Bank Account Number</label>
-              <input
-                type="text"
+            <div className="space-y-1">
+              <label className="flex items-center text-sm font-medium text-green-700">
+                <Hash className="mr-2 h-4 w-4" />
+                Bank Account Number
+              </label>
+              <TextField
+                fullWidth
+                size="small"
                 name="bankAccountNumber"
                 value={formData.bankAccountNumber}
                 onChange={handleChange}
-                required
-                className="w-full border rounded p-2"
+                placeholder="Enter bank account number"
               />
             </div>
-            <div>
-              <label className="block mb-1 font-medium">Bank Name</label>
-                <select
-                    name="bankName"
-                    value={formData.bankName}
-                    onChange={handleChange}
-                    required
-                    className="w-full border rounded p-2"
-                    >
-                    <option value="">Select Bank</option>
-                    <option value="KBank">KBank</option>
-                    <option value="SCB">SCB</option>
-                    <option value="BBL">BBL</option>
-                    <option value="Krungsri">Krungsri</option>
-                    <option value="KTB">KTB</option>
-                    <option value="TTB">TTB</option>
-                    <option value="BAAC">BAAC</option>
-                    <option value="GSB">GSB</option>
-                    <option value="CIMB">CIMB</option>
-                    <option value="UOB">UOB</option>
-                </select>
+
+            <div className="space-y-1">
+              <label className="flex items-center text-sm font-medium text-green-700">
+                <Landmark className="mr-2 h-4 w-4" />
+                Bank Name
+              </label>
+              <FormControl fullWidth size="small">
+                <Select
+                  name="bankName"
+                  value={formData.bankName}
+                  onChange={handleChange}
+                  displayEmpty
+                  className="bg-green-50 text-green-900 border border-green-300 rounded-md"
+                >
+                  <MenuItem value=""><span className='text-gray-400'>Select bank</span></MenuItem>
+                  <MenuItem value="KBank">KBank</MenuItem>
+                  <MenuItem value="SCB">SCB</MenuItem>
+                  <MenuItem value="BBL">BBL</MenuItem>
+                  <MenuItem value="Krungsri">Krungsri</MenuItem>
+                  <MenuItem value="KTB">KTB</MenuItem>
+                  <MenuItem value="TTB">TTB</MenuItem>
+                  <MenuItem value="BAAC">BAAC</MenuItem>
+                  <MenuItem value="GSB">GSB</MenuItem>
+                  <MenuItem value="CIMB">CIMB</MenuItem>
+                  <MenuItem value="UOB">UOB</MenuItem>
+                </Select>
+              </FormControl>
             </div>
           </>
         )}
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-        >
-          Submit
-        </button>
+        {/* Submit Button */}
+        <div className="col-span-1"></div>
+        <div className="col-span-1">
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            style={{ backgroundColor: '#16A34A', color: '#fff' }}
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </div>
   );

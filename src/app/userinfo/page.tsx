@@ -81,10 +81,11 @@ export default function UserInfoPage() {
       </div>
 
       {/* Right Panel - Dynamic Content */}
-      <div className="w-2/3 p-10">
+      <div className="w-2/3 pt-10 px-20">
         {activeTab === "payment" && (
           <div>
             <AddPaymentMethod />
+            <ManagePaymentMethod />
           </div>
         )}
 

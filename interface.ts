@@ -91,6 +91,8 @@ export interface PaymentMethod {
     | "GSB"
     | "CIMB"
     | "UOB";
+  cardNumber?: string;     
+  bankAccountNumber?: string
   createdAt: string;
 }
 
