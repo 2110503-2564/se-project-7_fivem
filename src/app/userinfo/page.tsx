@@ -2,9 +2,10 @@
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import getUserProfile from "@/libs/getUserProfile"
-import PaymentMethod from "@/components/PaymentMethod"
+import AddPaymentMethod from "@/components/AddPaymentMethod"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import ManagePaymentMethod from "@/components/ManagePaymentMethod"
 
 export default function UserInfoPage() {
   const { data: session, status } = useSession()
@@ -82,11 +83,9 @@ export default function UserInfoPage() {
       {/* Right Panel - Dynamic Content */}
       <div className="w-2/3 p-10">
         {activeTab === "payment" && (
-          <div className="bg-white p-6 rounded-2xl shadow-xl text-gray-700">
-            <h3 className="text-xl font-semibold mb-2">Payment Method</h3>
-            <p className="text-sm text-gray-500">Coming soon...</p>
-            Blablabla
-          </div>        
+          <div>
+            <AddPaymentMethod />
+          </div>
         )}
 
         {activeTab === "transactions" && (
