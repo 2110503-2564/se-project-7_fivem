@@ -2,15 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { getTransactions } from "@/libs/getTransactions";
+import downloadTransaction from "@/libs/downloadTransaction";
 import { Transaction } from "../../interface";
 import { useSession } from "next-auth/react";
-import dayjs from "dayjs"; // ใช้ dayjs สำหรับการแปลงวันที่
+import dayjs from "dayjs";
 
 function TransactionTable() {
   const { data: session } = useSession();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +30,31 @@ function TransactionTable() {
 
     fetchData();
   }, [session?.user.token]);
+
+  const handleDownloadCSV = async () => {
+    if (!session?.user.token) return;
+    
+    try {
+      setIsDownloading(true);
+      const csvData = await downloadTransaction(session.user.token);
+      
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `transactions-${dayjs().format('YYYY-MM-DD')}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Failed to download CSV:", err);
+      alert("Failed to download transactions CSV");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   if (loading) {
     return <div className="text-center p-6">Loading transactions...</div>;
@@ -54,7 +81,7 @@ function TransactionTable() {
             const bookingDate =
               typeof tx.booking !== "string"
                 ? tx.booking.apptDate
-                : null; // ถ้า booking เป็น BookingItem ก็สามารถดึง apptDate ได้
+                : null;
 
             return (
               <tr key={tx._id} className="border-t hover:bg-green-50">
@@ -72,7 +99,6 @@ function TransactionTable() {
                   ฿{tx.amount.toLocaleString()}
                 </td>
                 <td className="py-3 px-4">
-                  {/* แสดง apptDate ถ้ามี */}
                   {bookingDate
                     ? dayjs(bookingDate).format("MM/DD/YYYY")
                     : "No Date Available"}
@@ -80,7 +106,7 @@ function TransactionTable() {
                 <td className="py-3 px-4">
                   <span
                     className={`px-2 py-1 rounded-full text-sm ${
-                      tx.status === "paid"
+                      tx.status === "success"
                         ? "bg-green-200 text-green-700"
                         : "bg-red-200 text-red-700"
                     }`}
@@ -93,6 +119,17 @@ function TransactionTable() {
           })}
         </tbody>
       </table>
+      <div className="flex justify-center my-6">
+        <button
+          onClick={handleDownloadCSV}
+          disabled={isDownloading}
+          className={`${
+            isDownloading ? "bg-green-400" : "bg-green-600 hover:bg-green-700"
+          } text-white font-semibold py-2 px-4 rounded flex items-center`}
+        >
+          {isDownloading ? "Downloading..." : "Download CSV"}
+        </button>
+      </div>
     </div>
   );
 }
