@@ -76,7 +76,7 @@ function TransactionTable() {
             <th className="py-3 px-4 text-left">Status</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="text-black">
           {transactions.map((tx) => {
             const bookingDate =
               typeof tx.booking !== "string"
