@@ -179,7 +179,6 @@ const ManagePaymentMethod: React.FC = () => {
                         Select Your Payment Method
                     </label>
                     <FormControl fullWidth size="small">
-
                         <Select
                             displayEmpty
                             value={selectedPaymentMethod}
