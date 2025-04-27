@@ -30,11 +30,25 @@ function TransactionTable() {
   }, [session?.user.token]);
 
   if (loading) {
-    return <div className="text-center p-6">Loading transactions...</div>;
+    return (
+      <div className="text-center p-6">
+        <div className="animate-pulse">Loading transactions...</div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center text-red-500 p-6">{error}</div>;
+    return (
+      <div className="text-center p-6">
+        <p className="text-red-500">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-2 px-4 py-2 bg-green-600 text-white rounded"
+        >
+          โหลดใหม่
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -52,9 +66,9 @@ function TransactionTable() {
         <tbody>
           {transactions.map((tx) => {
             const bookingDate =
-              typeof tx.booking !== "string"
+              tx.booking && typeof tx.booking !== "string"
                 ? tx.booking.apptDate
-                : null; // ถ้า booking เป็น BookingItem ก็สามารถดึง apptDate ได้
+                : null;
 
             return (
               <tr key={tx._id} className="border-t hover:bg-green-50">
@@ -68,9 +82,7 @@ function TransactionTable() {
                     ? tx.campground
                     : (tx.campground as any)?.name || "Unknown"}
                 </td>
-                <td className="py-3 px-4">
-                  ฿{tx.amount.toLocaleString()}
-                </td>
+                <td className="py-3 px-4">฿{tx.amount.toLocaleString()}</td>
                 <td className="py-3 px-4">
                   {/* แสดง apptDate ถ้ามี */}
                   {bookingDate

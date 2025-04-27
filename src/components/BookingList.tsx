@@ -75,10 +75,11 @@ export default function BookingList() {
         <div className="animate-pulse flex flex-col items-center">
           <Image
             src={"/img/logo.png"}
-            alt='Camping adventure'
+            alt="Camping adventure"
             width={24}
             height={24}
-            className="h-12 w-12 text-green-700 mb-4 animate-bounce" />
+            className="h-12 w-12 text-green-700 mb-4 animate-bounce"
+          />
           <p className="text-green-800">Loading your camping adventures...</p>
         </div>
       </div>
@@ -90,14 +91,18 @@ export default function BookingList() {
       <div className="flex justify-center items-center min-h-screen bg-green-50">
         <div className="bg-white p-8 rounded-xl shadow-md border-l-4 border-green-600 max-w-md text-center">
           <Image
-            src='/img/logo.png'
+            src="/img/logo.png"
             alt="logo"
             width={24}
             height={24}
-            className="h-10 w-10 mx-auto mb-4"/>
+            className="h-10 w-10 mx-auto mb-4"
+          />
           <h3 className="text-xl font-bold text-green-800 mb-2">Oops!</h3>
           <p className="text-green-700 mb-4">{error}</p>
-          <Link href="/campground" className="text-green-600 hover:text-green-800 font-medium">
+          <Link
+            href="/campground"
+            className="text-green-600 hover:text-green-800 font-medium"
+          >
             Back to campgrounds
           </Link>
         </div>
@@ -111,14 +116,18 @@ export default function BookingList() {
         <div className="bg-green-700 p-6">
           <h1 className="text-2xl font-bold text-green-100 flex items-center">
             <Tent className="mr-3 h-8 w-8 text-green-200" />
-            {role === 'admin' ? 'All Camping Reservations' : 'Your Camping Reservations'}
+            {role === "admin"
+              ? "All Camping Reservations"
+              : "Your Camping Reservations"}
           </h1>
         </div>
 
         {bookItems.length === 0 ? (
           <div className="text-center p-12 bg-green-50">
             <Tent className="h-12 w-12 text-green-400 mx-auto mb-4" />
-            <p className="text-xl text-green-800 font-medium mb-2">No bookings found</p>
+            <p className="text-xl text-green-800 font-medium mb-2">
+              No bookings found
+            </p>
             <Link
               href="/campground"
               className="mt-4 inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-green-50 rounded-lg transition-colors"
@@ -132,7 +141,7 @@ export default function BookingList() {
             <table className="w-full min-w-[1000px] lg:min-w-0">
               <thead className="bg-green-100">
                 <tr className="text-green-900 text-sm font-medium">
-                  {role === 'admin' && (
+                  {role === "admin" && (
                     <th className="p-4 text-left w-[200px]">
                       <div className="flex items-center">
                         <User className="mr-2 h-4 w-4 text-green-700" />
@@ -159,17 +168,22 @@ export default function BookingList() {
               </thead>
               <tbody className="divide-y divide-green-200">
                 {bookItems.map((booking) => (
-                  <tr key={booking._id} className="hover:bg-green-50 transition-colors">
-                    {role === 'admin' && (
+                  <tr
+                    key={booking._id}
+                    className="hover:bg-green-50 transition-colors"
+                  >
+                    {role === "admin" && (
                       <td className="p-4 text-green-800 font-mono text-sm truncate max-w-[200px]">
                         {booking.user || "N/A"}
                       </td>
                     )}
                     <td className="p-4 font-medium text-green-900 min-w-[200px]">
-                      {booking.campground.name}
+                      {booking.campground
+                        ? booking.campground.name
+                        : "Campground has been deleted"}
                     </td>
                     <td className="p-4 text-green-700 min-w-[150px]">
-                      {booking.campground.tel}
+                      {booking.campground ? booking.campground.tel : "N/A"}
                     </td>
                     <td className="p-4 text-green-800 min-w-[150px]">
                       {new Date(booking.apptDate).toLocaleDateString()}
