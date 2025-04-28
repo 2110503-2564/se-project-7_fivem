@@ -115,3 +115,23 @@ test('error delete payment', async ({ page }) => {
   await page.goto('http://localhost:3000/userinfo');
   await expect(page.getByText('Welcome BackSign')).toBeVisible();
 });
+
+test('view transacion', async ({ page }) => {
+  await page.goto('http://localhost:3000/');
+  await page.getByRole('button', { name: 'Sign In' }).click();
+  await page.getByRole('textbox', { name: 'john@example.com' }).click();
+  await page.getByRole('textbox', { name: 'john@example.com' }).fill('abc@gmail.com');
+  await page.getByRole('textbox', { name: '••••••••' }).click();
+  await page.getByRole('textbox', { name: '••••••••' }).fill('123456');
+  await page.getByRole('main').getByRole('button', { name: 'Sign In' }).click();
+  await page.getByRole('button', { name: 'abc' }).click();
+  await page.getByRole('button', { name: 'Transactions' }).click();
+  await expect(page.getByRole('cell', { name: '680f3118bb8c5e0356c61483' })).toBeVisible();
+  await page.getByRole('button', { name: 'Sign Out' }).click();
+  await page.getByRole('main').getByRole('button', { name: 'Sign Out' }).click();
+});
+
+test('test', async ({ page }) => {
+  await page.goto('http://localhost:3000/api/auth/signin');
+  await expect(page.getByText('Sign in to your camping')).toBeVisible();
+});
