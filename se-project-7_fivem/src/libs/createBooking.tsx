@@ -3,7 +3,7 @@ export default async function createBooking(
   campgroundId: string,
   user: string,
   token: string,
-  paymentMethod: string
+  paymentMethod: string,
 ) {
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
@@ -12,7 +12,7 @@ export default async function createBooking(
   }
 
   const response = await fetch(
-    `${process.env.BACKEND_URL}/api/v1/campgrounds/${campgroundId}/bookings`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/campgrounds/${campgroundId}/bookings`,
     {
       method: "POST",
       headers: {
@@ -22,9 +22,9 @@ export default async function createBooking(
       body: JSON.stringify({
         apptDate: apptDate.toISOString(),
         user,
-        paymentMethod
+        paymentMethod,
       }),
-    }
+    },
   );
 
   if (!response.ok) {

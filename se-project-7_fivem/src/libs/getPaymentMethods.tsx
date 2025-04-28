@@ -1,7 +1,9 @@
 import { PaymentMethod } from "../../interface";
 
-export async function getPaymentMethods(token: string): Promise<PaymentMethod[]> {
-  const res = await fetch(`${process.env.BACKEND_URL}/api/v1/paymentmethod`, {
+export async function getPaymentMethods(
+  token: string,
+): Promise<PaymentMethod[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/paymentmethod`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

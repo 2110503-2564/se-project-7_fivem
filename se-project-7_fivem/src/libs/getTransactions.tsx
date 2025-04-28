@@ -2,10 +2,10 @@
 import { Transaction } from "../../interface";
 
 export const getTransactions = async (
-  token: string
+  token: string,
 ): Promise<Transaction[]> => {
   try {
-    const res = await fetch(`${process.env.BACKEND_URL}/api/v1/transaction`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/transaction`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

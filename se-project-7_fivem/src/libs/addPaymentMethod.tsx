@@ -2,9 +2,9 @@ import { PaymentMethod } from "../../interface";
 
 export async function addPaymentMethod(
   methodData: Partial<PaymentMethod>,
-  token: string
+  token: string,
 ): Promise<PaymentMethod> {
-  const res = await fetch(`${process.env.BACKEND_URL}/api/v1/paymentmethod`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/paymentmethod`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

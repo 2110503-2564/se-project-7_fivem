@@ -4,7 +4,7 @@ import { UpdateBookingData } from "../../interface";
 export default async function updateBooking(
   id: string,
   data: UpdateBookingData,
-  token: string
+  token: string,
 ): Promise<BookingItem> {
   try {
     const currentDate = new Date();
@@ -15,7 +15,7 @@ export default async function updateBooking(
     }
 
     const response = await fetch(
-      `${process.env.BACKEND_URL}/api/v1/bookings/${id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/bookings/${id}`,
       {
         method: "PUT",
         headers: {
@@ -24,9 +24,9 @@ export default async function updateBooking(
         },
         body: JSON.stringify({
           ...data,
-          apptDate: new Date(data.apptDate).toISOString()
+          apptDate: new Date(data.apptDate).toISOString(),
         }),
-      }
+      },
     );
 
     const responseData = await response.json();
@@ -39,7 +39,7 @@ export default async function updateBooking(
   } catch (error) {
     console.error("Booking update error:", error);
     throw new Error(
-      error instanceof Error ? error.message : "Failed to update booking"
+      error instanceof Error ? error.message : "Failed to update booking",
     );
   }
 }

@@ -3,16 +3,19 @@ import { PaymentMethod } from "../../interface";
 export async function updatePaymentMethod(
   id: string,
   updates: Partial<PaymentMethod>,
-  token: string
+  token: string,
 ): Promise<PaymentMethod> {
-  const res = await fetch(`${process.env.BACKEND_URL}/api/v1/paymentmethod/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/paymentmethod/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updates),
     },
-    body: JSON.stringify(updates),
-  });
+  );
 
   if (!res.ok) {
     const error = await res.json();
