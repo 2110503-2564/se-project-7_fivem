@@ -1,0 +1,4 @@
+node_modules/*
+newman/*
+coverage/*
+#config/config.env

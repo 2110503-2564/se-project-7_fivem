@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./se-project-7_fivem
+      dockerfile: Dockerfile
+    ports:
+      - "4000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5003
+    volumes:
+      - ./se-project-7_fivem:/app
+      - /app/node_modules
+      - /app/.next
+
+  backend:
+    build:
+      context: ./se-project-backend-7_fivem
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5003"
+    environment:
+      - PORT=5003
+      - NODE_ENV=development
+      - MONGO_URI=mongodb+srv://Cochapat:iw0ntkeepchasingghosts@project.x2eog.mongodb.net/Project?retryWrites=true&w=majority&appName=Project
+      - JWT_SECRET=asdfjkl;;lkjfdsa
+      - JWT_EXPIRE=30d
+      - JWT_COOKIE_EXPIRE=30
+    command: npm run dev
+    volumes:
+      - ./se-project-backend-7_fivem:/app
+      - /app/node_modules
+
+  frontend-test:
+    build:
+      context: ./se-project-7_fivem
+      dockerfile: Dockerfile
+    command: npm run test
+    volumes:
+      - ./se-project-7_fivem:/app
+      - /app/node_modules
+
+  backend-test:
+    build:
+      context: ./se-project-backend-7_fivem
+      dockerfile: Dockerfile
+    command: npm run test-coverage
+    volumes:
+      - ./se-project-backend-7_fivem:/app
+      - /app/node_modules
