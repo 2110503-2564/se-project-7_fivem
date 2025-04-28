@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('create payment', async ({ page }) => {
+test('US2-1 create payment', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Sign In' }).click();
   await page.getByRole('textbox', { name: 'john@example.com' }).click();
@@ -24,7 +24,7 @@ test('create payment', async ({ page }) => {
   await page.getByRole('button', { name: 'Sign Out' }).click();
   await page.getByRole('main').getByRole('button', { name: 'Sign Out' }).click();
 });
-test('error create payment', async ({ page }) => {
+test('US2-1 error create payment', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Sign In' }).click();
   await page.getByRole('textbox', { name: 'john@example.com' }).click();
@@ -46,7 +46,7 @@ test('error create payment', async ({ page }) => {
   await page.getByRole('main').getByRole('button', { name: 'Sign Out' }).click();
 });
 
-test('update payment', async ({ page }) => {
+test('US2-2 update payment', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Sign In' }).click();
   await page.getByRole('textbox', { name: 'john@example.com' }).click();
@@ -67,7 +67,7 @@ test('update payment', async ({ page }) => {
   await page.getByRole('main').getByRole('button', { name: 'Sign Out' }).click();
 });
 
-test('error update payment', async ({ page }) => {
+test('US2-2 error update payment', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Sign In' }).click();
   await page.getByRole('textbox', { name: 'john@example.com' }).click();
@@ -88,7 +88,7 @@ test('error update payment', async ({ page }) => {
   await page.getByRole('main').getByRole('button', { name: 'Sign Out' }).click();
 });
 
-test('delete payment', async ({ page }) => {
+test('US2-3 delete payment', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Sign In' }).click();
   await page.getByRole('textbox', { name: 'john@example.com' }).click();
@@ -111,12 +111,12 @@ test('delete payment', async ({ page }) => {
   await page.getByRole('main').getByRole('button', { name: 'Sign Out' }).click();
 });
 
-test('error delete payment', async ({ page }) => {
+test('US2-3 error delete payment', async ({ page }) => {
   await page.goto('http://localhost:3000/userinfo');
   await expect(page.getByText('Welcome BackSign')).toBeVisible();
 });
 
-test('view transacion', async ({ page }) => {
+test('US2-4 view transacion', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Sign In' }).click();
   await page.getByRole('textbox', { name: 'john@example.com' }).click();
@@ -131,7 +131,7 @@ test('view transacion', async ({ page }) => {
   await page.getByRole('main').getByRole('button', { name: 'Sign Out' }).click();
 });
 
-test('test', async ({ page }) => {
+test('US2-4 error view transaction', async ({ page }) => {
   await page.goto('http://localhost:3000/api/auth/signin');
   await expect(page.getByText('Sign in to your camping')).toBeVisible();
 });
