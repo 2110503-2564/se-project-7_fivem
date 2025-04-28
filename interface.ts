@@ -80,7 +80,7 @@ export interface PaymentMethod {
   method: "credit_card" | "bank_account";
   cardFingerprint?: string;
   bankAccountFingerprint?: string;
-  bankName?: 
+  bankName?:
     | "KBank"
     | "SCB"
     | "BBL"
@@ -91,15 +91,14 @@ export interface PaymentMethod {
     | "GSB"
     | "CIMB"
     | "UOB";
-  cardNumber?: string;     
-  bankAccountNumber?: string
+  cardNumber?: string;
+  bankAccountNumber?: string;
   createdAt: string;
 }
 
-
 export interface Transaction {
   _id: string;
-  user: string | User; // Use `User` if populated
+  user: string | User | null; // Use `User` if populated
   booking: BookingItem | string;
   campground: CampgroundItem | string;
   paymentMethod: PaymentMethod | string;
@@ -109,7 +108,7 @@ export interface Transaction {
   paidAt?: string;
 }
 
-
 export interface CampgroundWithBookings extends CampgroundItem {
   bookings: BookingItem[];
 }
+

@@ -62,7 +62,7 @@ export default function EditBookingPage() {
           apptDate: date.toISOString(),
           campground: selectedCampground,
         },
-        session.user.token
+        session.user.token,
       );
 
       router.push("/mybooking");
@@ -110,53 +110,9 @@ export default function EditBookingPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Select Campground */}
-          <div>
-            <label className="block text-sm font-medium text-green-700 mb-2 flex items-center">
-              <MapPin className="mr-2 h-4 w-4" />
-              Campground
-            </label>
-            <Select
-              fullWidth
-              value={selectedCampground}
-              onChange={(e) => setSelectedCampground(e.target.value)}
-              className="bg-green-50"
-              displayEmpty
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#16a34a",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#15803d",
-                },
-              }}
-              renderValue={(value) => {
-                if (!value)
-                  return (
-                    <span className="text-green-500">Select Campground</span>
-                  );
-                const campground = campgrounds.find((cg) => cg._id === value);
-                return (
-                  <span className="text-green-900">
-                    {campground ? campground.name : "Not Found"}
-                  </span>
-                );
-              }}
-            >
-              <MenuItem value="" disabled>
-                <span className="text-green-500">Choose your campsite</span>
-              </MenuItem>
-              {campgrounds.map((cg) => (
-                <MenuItem key={cg._id} value={cg._id}>
-                  {cg.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-
           {/* Select Date */}
           <div>
-            <label className="block text-sm font-medium text-green-700 mb-2 flex items-center">
+            <label className="text-sm font-medium text-green-700 mb-2 flex items-center">
               <Calendar className="mr-2 h-4 w-4" />
               Booking Date
             </label>

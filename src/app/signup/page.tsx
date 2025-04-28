@@ -117,14 +117,14 @@ export default function RegisterPage() {
                 errors.tel ? "border-red-500" : "border-green-200 focus:ring-2 focus:ring-green-500"
               }`}
               type="tel"
-              placeholder="081-234-5678 or 0812345678"
+              placeholder="0812345678"
               pattern={telPattern.source}
               value={tel}
               onChange={(e) => setTel(e.target.value)}
             />
             {errors.tel && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.tel} (Valid formats: 0812345678 or 081-234-5678)
+                {errors.tel} (Valid formats: 0812345678)
               </p>
             )}
           </div>

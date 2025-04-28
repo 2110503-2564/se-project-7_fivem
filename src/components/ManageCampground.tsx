@@ -135,7 +135,7 @@ const UpdateDeleteCampground: React.FC = () => {
         postalcode: "",
         tel: "",
         region: "",
-        price: 0, // รีเซ็ตฟิลด์ price
+        price: 0,
       });
     } catch (err) {
       setError("Failed to delete campground");
