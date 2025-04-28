@@ -49,33 +49,91 @@ test('US1-1 (Create Campground) : AC1', async ({ page }) => {
 test('US1-1 (Create Campground) : AC2', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Sign In' }).click();
-  await page.getByRole('textbox', { name: 'john@example.com' }).click();
   await page.getByRole('textbox', { name: 'john@example.com' }).fill('admin@gmail.com');
-  await page.getByRole('textbox', { name: '••••••••' }).click();
   await page.getByRole('textbox', { name: '••••••••' }).fill('12345678');
   await page.getByRole('main').getByRole('button', { name: 'Sign In' }).click();
+
   await expect(page.getByRole('link', { name: 'Manage Campground' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'admin' })).toBeVisible();
   await page.getByRole('link', { name: 'Manage Campground' }).click();
-  await page.locator('input[name="address"]').click();
-  await page.locator('input[name="address"]').fill('Campground Name is a blank field');
-  await page.locator('input[name="district"]').click();
-  await page.locator('input[name="district"]').fill('Expected');
-  await page.locator('input[name="province"]').click();
-  await page.locator('input[name="province"]').fill('Fail');
-  await page.locator('input[name="postalcode"]').click();
-  await page.locator('input[name="postalcode"]').fill('00000');
-  await page.locator('input[name="tel"]').click();
-  await page.locator('input[name="tel"]').fill('012345678');
-  await page.locator('input[name="price"]').click();
-  await page.locator('input[name="price"]').fill('8888');
+
+  // Fill all fields once
+  await page.locator('input[name="name"]').fill('Test Campground Creation');
+  await page.locator('input[name="address"]').fill('US1');
+  await page.locator('input[name="district"]').fill('1');
+  await page.locator('input[name="province"]').fill('AC2');
+  await page.locator('input[name="postalcode"]').fill('12345');
+  await page.locator('input[name="tel"]').fill('022454545');
+  await page.locator('input[name="price"]').fill('500');
   await page.getByLabel('').click();
   await page.getByRole('option', { name: 'South' }).click();
-  await page.getByRole('button', { name: 'Create Campground' }).click();
-  await expect(page.getByText('All fields are required')).toBeVisible();
+
+  await test.step('Name field is blank', async () => {
+    await page.locator('input[name="name"]').fill('');
+    await page.getByRole('button', { name: 'Create Campground' }).click();
+    await expect(page.getByText('All fields are required')).toBeVisible();
+    await page.locator('input[name="name"]').fill('Test Campground Creation');
+  });
+
+  await test.step('Address field is blank', async () => {
+    await page.locator('input[name="address"]').fill('');
+    await page.getByRole('button', { name: 'Create Campground' }).click();
+    await expect(page.getByText('All fields are required')).toBeVisible();
+    await page.locator('input[name="address"]').fill('US1');
+  });
+
+  await test.step('District field is blank', async () => {
+    await page.locator('input[name="district"]').fill('');
+    await page.getByRole('button', { name: 'Create Campground' }).click();
+    await expect(page.getByText('All fields are required')).toBeVisible();
+    await page.locator('input[name="district"]').fill('1');
+  });
+
+  await test.step('Province field is blank', async () => {
+    await page.locator('input[name="province"]').fill('');
+    await page.getByRole('button', { name: 'Create Campground' }).click();
+    await expect(page.getByText('All fields are required')).toBeVisible();
+    await page.locator('input[name="province"]').fill('AC2');
+  });
+
+  await test.step('Postal Code field is blank', async () => {
+    await page.locator('input[name="postalcode"]').fill('');
+    await page.getByRole('button', { name: 'Create Campground' }).click();
+    await expect(page.getByText('All fields are required')).toBeVisible();
+    await page.locator('input[name="postalcode"]').fill('12345');
+  });
+
+  await test.step('Telephone field is blank', async () => {
+    await page.locator('input[name="tel"]').fill('');
+    await page.getByRole('button', { name: 'Create Campground' }).click();
+    await expect(page.getByText('All fields are required')).toBeVisible();
+    await page.locator('input[name="tel"]').fill('022454545');
+  });
+
+  await test.step('Price field is blank', async () => {
+    await page.locator('input[name="price"]').fill('');
+    await page.getByRole('button', { name: 'Create Campground' }).click();
+    await expect(page.getByText('All fields are required')).toBeVisible();
+    await page.locator('input[name="price"]').fill('500');
+  });
+
+  await test.step('All fields are blank', async () => {
+    await page.locator('input[name="name"]').fill('');
+    await page.locator('input[name="address"]').fill('');
+    await page.locator('input[name="district"]').fill('');
+    await page.locator('input[name="province"]').fill('');
+    await page.locator('input[name="postalcode"]').fill('');
+    await page.locator('input[name="tel"]').fill('');
+    await page.locator('input[name="price"]').fill('');
+    await page.getByRole('button', { name: 'Create Campground' }).click();
+    await expect(page.getByText('All fields are required')).toBeVisible();
+  });
+
   await page.getByRole('button', { name: 'Sign Out' }).click();
   await page.getByRole('main').getByRole('button', { name: 'Sign Out' }).click();
 });
+
+
 
 
 
@@ -129,26 +187,92 @@ test('US1-2 (Update Campground): AC1', async ({ page }) => {
 test('US1-2 (Update Campground) : AC2', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Sign In' }).click();
-  await page.getByRole('textbox', { name: 'john@example.com' }).click();
   await page.getByRole('textbox', { name: 'john@example.com' }).fill('admin@gmail.com');
-  await page.getByRole('textbox', { name: '••••••••' }).click();
   await page.getByRole('textbox', { name: '••••••••' }).fill('12345678');
   await page.getByRole('main').getByRole('button', { name: 'Sign In' }).click();
+
   await expect(page.getByRole('link', { name: 'Manage Campground' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'admin' })).toBeVisible();
   await page.getByRole('link', { name: 'Manage Campground' }).click();
+
   await page.locator('select').selectOption('manage');
   await page.getByRole('combobox').filter({ hasText: 'Select a campground' }).click();
   await page.getByRole('option', { name: 'Edit' }).click();
-  await page.locator('input[name="name"]').click();
-  await page.locator('input[name="name"]').fill('');
-  await page.locator('input[name="address"]').click();
-  await page.locator('input[name="address"]').fill('Campground Name is blank');
-  await page.getByRole('button', { name: 'Update' }).click();
-  await expect(page.getByText('Failed to update campground')).toBeVisible();
+
+  // Fill normally once
+  await page.locator('input[name="name"]').fill('Test Campground Update');
+  await page.locator('input[name="address"]').fill('US1');
+  await page.locator('input[name="district"]').fill('2');
+  await page.locator('input[name="province"]').fill('AC2');
+  await page.locator('input[name="postalcode"]').fill('12345');
+  await page.locator('input[name="tel"]').fill('022454545');
+  await page.locator('input[name="price"]').fill('500');
+
+  await test.step('Name field is blank', async () => {
+    await page.locator('input[name="name"]').fill('');
+    await page.getByRole('button', { name: 'Update' }).click();
+    await expect(page.getByText('Failed to update campground')).toBeVisible();
+    await page.locator('input[name="name"]').fill('Test Campground Update');
+  });
+
+  await test.step('Address field is blank', async () => {
+    await page.locator('input[name="address"]').fill('');
+    await page.getByRole('button', { name: 'Update' }).click();
+    await expect(page.getByText('Failed to update campground')).toBeVisible();
+    await page.locator('input[name="address"]').fill('US1');
+  });
+
+  await test.step('District field is blank', async () => {
+    await page.locator('input[name="district"]').fill('');
+    await page.getByRole('button', { name: 'Update' }).click();
+    await expect(page.getByText('Failed to update campground')).toBeVisible();
+    await page.locator('input[name="district"]').fill('2');
+  });
+
+  await test.step('Province field is blank', async () => {
+    await page.locator('input[name="province"]').fill('');
+    await page.getByRole('button', { name: 'Update' }).click();
+    await expect(page.getByText('Failed to update campground')).toBeVisible();
+    await page.locator('input[name="province"]').fill('AC2');
+  });
+
+  await test.step('Postal Code field is blank', async () => {
+    await page.locator('input[name="postalcode"]').fill('');
+    await page.getByRole('button', { name: 'Update' }).click();
+    await expect(page.getByText('Failed to update campground')).toBeVisible();
+    await page.locator('input[name="postalcode"]').fill('12345');
+  });
+
+  await test.step('Telephone field is blank', async () => {
+    await page.locator('input[name="tel"]').fill('');
+    await page.getByRole('button', { name: 'Update' }).click();
+    await expect(page.getByText('Failed to update campground')).toBeVisible();
+    await page.locator('input[name="tel"]').fill('022454545');
+  });
+
+  await test.step('Price field is blank', async () => {
+    await page.locator('input[name="price"]').fill('');
+    await page.getByRole('button', { name: 'Update' }).click();
+    await expect(page.getByText('Failed to update campground')).toBeVisible();
+    await page.locator('input[name="price"]').fill('500');
+  });
+
+  await test.step('All fields are blank', async () => {
+    await page.locator('input[name="name"]').fill('');
+    await page.locator('input[name="address"]').fill('');
+    await page.locator('input[name="district"]').fill('');
+    await page.locator('input[name="province"]').fill('');
+    await page.locator('input[name="postalcode"]').fill('');
+    await page.locator('input[name="tel"]').fill('');
+    await page.locator('input[name="price"]').fill('');
+    await page.getByRole('button', { name: 'Update' }).click();
+    await expect(page.getByText('Failed to update campground')).toBeVisible();
+  });
+
   await page.getByRole('button', { name: 'Sign Out' }).click();
   await page.getByRole('main').getByRole('button', { name: 'Sign Out' }).click();
 });
+
 
 
 test('US1-3 (Delete Campground) : AC1', async ({ page }) => {
