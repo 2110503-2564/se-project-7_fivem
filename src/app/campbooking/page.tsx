@@ -6,10 +6,12 @@ import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { CampgroundItem } from "../../../interface";
 import getCampgrounds from "@/libs/getCampgrounds";
+import { getPaymentMethods } from "@/libs/getPaymentMethods";
 import createBooking from "@/libs/createBooking";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Calendar, MapPin, Coins } from "lucide-react";
+import { PaymentMethod } from "../../../interface";
 import Image from "next/image";
 
 export default function Page() {
@@ -22,6 +24,8 @@ export default function Page() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [selectedCampground, setSelectedCampground] = useState<CampgroundItem | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [paymentMethodId, setPaymentMethodId] = useState<string>("");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -44,8 +48,18 @@ export default function Page() {
       }
     };
 
+    const fetchPaymentMethods = async () => {
+      try {
+        const response = await getPaymentMethods(session?.user.token);
+        setPaymentMethods(response);
+      } catch (err) {
+        setError("Failed to fetch payment methods");
+      }
+    };
+
     if (status === "authenticated") {
       fetchCampgrounds();
+      fetchPaymentMethods();
     }
   }, [status]);
 
@@ -81,7 +95,8 @@ export default function Page() {
         dayjs(bookDate).toDate(),
         campgroundId,
         session.user._id,
-        session.user.token
+        session.user.token,
+        paymentMethodId
       );
 
       router.push("/mybooking");
@@ -94,10 +109,10 @@ export default function Page() {
     }
   };
 
-  const handleCampgroundChange = (e : any) => {
+  const handleCampgroundChange = (e: any) => {
     const selectedId = e.target.value;
     setCampgroundId(selectedId);
-  
+
     const selectedCg = campgrounds.find((cg) => cg._id === selectedId);
     setSelectedCampground(selectedCg ?? null);
   };
@@ -113,7 +128,7 @@ export default function Page() {
             alt="logo"
             width={24}
             height={24}
-            className="h-10 w-10 mb-2"/>
+            className="h-10 w-10 mb-2" />
           <h1 className="text-2xl font-bold text-center text-green-900">
             Reserve Your Campsite
           </h1>
@@ -169,6 +184,29 @@ export default function Page() {
             <div className="mb-6">
               <div className="flex items-center mb-2 text-sm text-green-700">
                 <Coins className="mr-2 h-4 w-4" />
+                Choose your Payment Method
+              </div>
+              <Select
+                variant="outlined"
+                fullWidth
+                  value={paymentMethodId}
+                  onChange={(e) => setPaymentMethodId(e.target.value)}
+                  className="bg-green-50 text-green-900 border border-green-300 rounded-md"
+                >
+                  <MenuItem value="" disabled>
+                    Choose your payment method
+                  </MenuItem>
+                  {paymentMethods.map((pm) => (
+                    <MenuItem key={pm._id} value={pm._id}>
+                      {pm.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+
+            <div className="mb-6">
+              <div className="flex items-center mb-2 text-sm text-green-700">
+                <Coins className="mr-2 h-4 w-4" />
                 Price
               </div>
               <input
@@ -179,7 +217,7 @@ export default function Page() {
                   selectedCampground?.price
                     ? `${selectedCampground.price.toLocaleString()} บาท`
                     : "0 บาท"
-                }                
+                }
               />
             </div>
 
@@ -187,11 +225,10 @@ export default function Page() {
             <button
               onClick={handleBooking}
               disabled={submitting || !campgroundId || !bookDate}
-              className={`w-full py-3 rounded-lg shadow-md font-medium text-white transition-all duration-300 ${
-                submitting || !campgroundId || !bookDate
+              className={`w-full py-3 rounded-lg shadow-md font-medium text-white transition-all duration-300 ${submitting || !campgroundId || !bookDate
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
-              }`}
+                }`}
             >
               {submitting ? (
                 <CircularProgress size={24} className="text-white" />

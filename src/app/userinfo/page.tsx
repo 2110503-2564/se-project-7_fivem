@@ -6,6 +6,7 @@ import AddPaymentMethod from "@/components/AddPaymentMethod"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import ManagePaymentMethod from "@/components/ManagePaymentMethod"
+import TransactionTable from "@/components/TransactionTable"
 
 export default function UserInfoPage() {
   const { data: session, status } = useSession()
@@ -119,10 +120,8 @@ export default function UserInfoPage() {
         )}
 
         {activeTab === "transactions" && (
-          <div className="bg-white p-6 rounded-2xl shadow-xl text-gray-700">
-            <h3 className="text-xl font-semibold mb-2">Transaction History</h3>
-            <p className="text-sm text-gray-500">Coming soon...</p>
-            Blablabla
+          <div className="bg-white p-6 rounded-b-lg shadow-md mt-4">
+            <TransactionTable />
           </div>
         )}
         {!activeTab && (

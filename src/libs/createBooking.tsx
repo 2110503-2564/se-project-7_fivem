@@ -2,7 +2,8 @@ export default async function createBooking(
   apptDate: Date,
   campgroundId: string,
   user: string,
-  token: string
+  token: string,
+  paymentMethod: string
 ) {
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
@@ -20,7 +21,8 @@ export default async function createBooking(
       },
       body: JSON.stringify({
         apptDate: apptDate.toISOString(),
-        user
+        user,
+        paymentMethod
       }),
     }
   );

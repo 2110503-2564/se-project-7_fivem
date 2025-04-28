@@ -2,6 +2,7 @@
 import { useState } from "react";
 import CreateCampgroundForm from "../../components/CreateCampgroundForm";
 import UpdateDeleteCampground from "@/components/ManageCampground";
+import CampgroundView from "@/components/CampgroudView"
 
 const CreateCampgroundPage = () => {
   const [view, setView] = useState("create");
@@ -18,6 +19,7 @@ const CreateCampgroundPage = () => {
         >
           <option value="create">Create Campground</option>
           <option value="manage">Manage Campground</option>
+          <option value="viewc">View Campground</option>
         </select>
       </div>
 
@@ -25,6 +27,7 @@ const CreateCampgroundPage = () => {
       <div className="w-full">
         {view === "create" && <CreateCampgroundForm />}
         {view === "manage" && <UpdateDeleteCampground />}
+        {view === "viewc" && <CampgroundView setView={setView} />}
       </div>
     </div>
   );
