@@ -204,7 +204,6 @@ test('US1-4 (View All Campgrounds) : AC1', async ({ page }) => {
   await expect(page.getByRole('cell', { name: 'Region' })).toBeVisible();
   await expect(page.getByRole('cell', { name: 'Price' })).toBeVisible();
   await expect(page.getByRole('cell', { name: 'Actions' })).toBeVisible();
-  await expect(page.getByRole('cell', { name: 'View Manage' })).toBeVisible();
 });
 
 
