@@ -4,6 +4,8 @@ export default async function getCampground(
   id: string,
 ): Promise<CampgroundResponse> {
   try {
+    console.log("[DEBUG] : ", process.env.NEXT_PUBLIC_BACKEND_URL);
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/campgrounds/${id}`,
       {

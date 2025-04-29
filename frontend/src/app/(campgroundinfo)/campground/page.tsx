@@ -4,6 +4,10 @@ import { Suspense } from "react";
 import { LinearProgress } from "@mui/material";
 import getCampgroundsSever from "@/libs/getCampgrundsClinent";
 
+// Disable caching for this page
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function CampgroundPage() {
   const campgrounds = getCampgroundsSever();
 

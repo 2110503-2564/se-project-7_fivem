@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import getCampgrounds from "@/libs/getCampgrounds";
 import {
   Button,
   TextField,
@@ -9,6 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import createCampground from "@/libs/createCampground";
 import {
   Tent,
@@ -17,13 +19,14 @@ import {
   Navigation,
   Phone,
   Mailbox,
-  Coins
+  Coins,
 } from "lucide-react";
 
 const regions = ["North", "South", "East", "West", "Central", "North East"];
 
 const CreateCampgroundForm: React.FC = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -32,7 +35,7 @@ const CreateCampgroundForm: React.FC = () => {
     postalcode: "",
     tel: "",
     region: "",
-    price: "", 
+    price: "",
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -62,6 +65,7 @@ const CreateCampgroundForm: React.FC = () => {
 
     try {
       await createCampground(formData, session.user.token);
+      await getCampgrounds();
       setSuccess("Campground created successfully!");
       setFormData({
         name: "",
@@ -73,9 +77,13 @@ const CreateCampgroundForm: React.FC = () => {
         region: "",
         price: "",
       });
+      
+      // Properly navigate and force a refresh
+      router.refresh();
+      router.push("/campground");
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to create campground"
+        err instanceof Error ? err.message : "Failed to create campground",
       );
     } finally {
       setSubmitting(false);
@@ -108,7 +116,13 @@ const CreateCampgroundForm: React.FC = () => {
             <Tent className="mr-2 h-4 w-4" />
             Campground Name
           </label>
-          <TextField fullWidth name="name" value={formData.name} onChange={handleChange} size="small" />
+          <TextField
+            fullWidth
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            size="small"
+          />
         </div>
 
         <div className="space-y-1">
@@ -116,7 +130,13 @@ const CreateCampgroundForm: React.FC = () => {
             <MapPin className="mr-2 h-4 w-4" />
             Address
           </label>
-          <TextField fullWidth name="address" value={formData.address} onChange={handleChange} size="small" />
+          <TextField
+            fullWidth
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            size="small"
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -125,14 +145,26 @@ const CreateCampgroundForm: React.FC = () => {
               <Landmark className="mr-2 h-4 w-4" />
               District
             </label>
-            <TextField fullWidth name="district" value={formData.district} onChange={handleChange} size="small" />
+            <TextField
+              fullWidth
+              name="district"
+              value={formData.district}
+              onChange={handleChange}
+              size="small"
+            />
           </div>
           <div className="space-y-1">
             <label className="flex items-center text-sm font-medium text-green-700">
               <Navigation className="mr-2 h-4 w-4" />
               Province
             </label>
-            <TextField fullWidth name="province" value={formData.province} onChange={handleChange} size="small" />
+            <TextField
+              fullWidth
+              name="province"
+              value={formData.province}
+              onChange={handleChange}
+              size="small"
+            />
           </div>
         </div>
 

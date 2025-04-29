@@ -36,6 +36,14 @@ export default function CampgroundCatalog({
 
   useEffect(() => {
     fetchCampgrounds();
+    
+    // Set up interval to refresh data every 5 seconds
+    const intervalId = setInterval(() => {
+      fetchCampgrounds();
+    }, 5000);
+    
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   if (loading) {
