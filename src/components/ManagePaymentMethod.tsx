@@ -97,15 +97,34 @@ const ManagePaymentMethod: React.FC = () => {
             setError("Please select a payment method to update");
             return;
         }
+        if (!formData.name || !formData.method) {
+            setSuccess("");
+            setError("Please fill out all required fields");
+            return;
+        }
+        if (formData.method === "credit_card" && !formData.cardNumber) {
+            setSuccess("");
+            setError("Card number is required for credit card method");
+            return;
+        }
+        if (
+            formData.method === "bank_account" &&
+            (!formData.bankAccountNumber || !formData.bankName)
+        ) {
+            setSuccess("");
+            setError("Bank name and account number are required for bank account method");
+            return;
+        }
         setLoading(true);
         setError("");
         setSuccess("");
-    
+
         try {
             const cleanedData = sanitizeFormData(formData);
-    
+
             await updatePaymentMethod(selectedPaymentMethod, cleanedData, session.user.token);
             setSuccess("Payment method updated successfully");
+
             const response = await getPaymentMethods(session.user.token);
             setPaymentMethods(response);
             setFormData({
@@ -122,6 +141,7 @@ const ManagePaymentMethod: React.FC = () => {
             setLoading(false);
         }
     };
+
 
     const handleDelete = async () => {
         if (!session?.user.token || !selectedPaymentMethod) {
@@ -313,8 +333,8 @@ const ManagePaymentMethod: React.FC = () => {
                             type="submit"
                             disabled={loading || !selectedPaymentMethod}
                             className={`w-full py-3 rounded-lg text-white font-medium shadow-md transition-colors flex items-center justify-center ${loading || !selectedPaymentMethod
-                                    ? "bg-blue-300 cursor-not-allowed"
-                                    : "bg-blue-700 hover:bg-blue-800"
+                                ? "bg-blue-300 cursor-not-allowed"
+                                : "bg-blue-700 hover:bg-blue-800"
                                 }`}
                         >
                             {loading ? (
@@ -329,8 +349,8 @@ const ManagePaymentMethod: React.FC = () => {
                             onClick={handleDelete}
                             disabled={loading || !selectedPaymentMethod}
                             className={`w-full py-3 rounded-lg text-white font-medium shadow-md transition-colors flex items-center justify-center ${loading || !selectedPaymentMethod
-                                    ? "bg-red-300 cursor-not-allowed"
-                                    : "bg-red-600 hover:bg-red-700"
+                                ? "bg-red-300 cursor-not-allowed"
+                                : "bg-red-600 hover:bg-red-700"
                                 }`}
                         >
                             {loading ? (
