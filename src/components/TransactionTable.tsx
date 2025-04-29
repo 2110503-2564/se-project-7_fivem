@@ -34,67 +34,96 @@ function TransactionTable() {
     fetchData();
   }, [session?.user.token]);
 
-  
   const handleDownloadPDF = async () => {
     if (!session?.user.token) return;
-  
+
     try {
       setIsDownloading(true);
       const csvData = await downloadTransaction(session.user.token);
       const parsed = Papa.parse(csvData, { header: true });
       const transactions = parsed.data as Record<string, any>[];
-  
+
       if (!transactions.length) {
         alert("No transactions to export");
         return;
       }
-  
+
       const doc = new jsPDF({
-        orientation: transactions[0] && Object.keys(transactions[0]).length > 6 ? 'landscape' : 'portrait',
-        unit: 'pt',
-        format: 'a4',
+        orientation:
+          transactions[0] && Object.keys(transactions[0]).length > 6
+            ? "landscape"
+            : "portrait",
+        unit: "pt",
+        format: "a4",
       });
-  
+
       doc.setFillColor(22, 160, 133);
-      doc.rect(0, 0, doc.internal.pageSize.getWidth(), 40, 'F');
-  
+      doc.rect(0, 0, doc.internal.pageSize.getWidth(), 40, "F");
+
       doc.setFontSize(20);
       doc.setTextColor(255, 255, 255);
-      doc.setFont('helvetica', 'bold');
-      doc.text('TRANSACTIONS REPORT', doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
-  
+      doc.setFont("helvetica", "bold");
+      doc.text(
+        "TRANSACTIONS REPORT",
+        doc.internal.pageSize.getWidth() / 2,
+        20,
+        { align: "center" },
+      );
+
       doc.setFontSize(12);
       doc.setTextColor(255, 255, 255);
-      doc.setFont('helvetica', 'normal');
-      doc.text(`Generated on ${dayjs().format('MMMM D, YYYY h:mm A')}`, doc.internal.pageSize.getWidth() / 2, 32, { align: 'center' });
-  
-      const formattedData = transactions.map(tx => {
-        const booking = typeof tx.booking === 'string' ? safeParseJSON(tx.booking) : tx.booking;
-        const campground = typeof tx.campground === 'string' ? safeParseJSON(tx.campground) : tx.campground;
-        const paymentMethod = typeof tx.paymentMethod === 'string' ? safeParseJSON(tx.paymentMethod) : tx.paymentMethod;
-  
-        const formattedAmount = Number(tx.amount).toLocaleString('en-US');
-  
+      doc.setFont("helvetica", "normal");
+      doc.text(
+        `Generated on ${dayjs().format("MMMM D, YYYY h:mm A")}`,
+        doc.internal.pageSize.getWidth() / 2,
+        32,
+        { align: "center" },
+      );
+
+      const formattedData = transactions.map((tx) => {
+        const booking =
+          typeof tx.booking === "string"
+            ? safeParseJSON(tx.booking)
+            : tx.booking;
+        const campground =
+          typeof tx.campground === "string"
+            ? safeParseJSON(tx.campground)
+            : tx.campground;
+        const paymentMethod =
+          typeof tx.paymentMethod === "string"
+            ? safeParseJSON(tx.paymentMethod)
+            : tx.paymentMethod;
+
+        const formattedAmount = Number(tx.amount).toLocaleString("en-US");
+
         return {
-          'ID': tx._id?.slice(-6) || 'N/A',
-          'User': tx.user?.slice(-6) || 'N/A',
-          'Campground': campground?.name || 'N/A',
-          'Date': booking?.apptDate ? dayjs(booking.apptDate).format('MMM D, YYYY') : 'N/A',
-          'Time': booking?.apptDate ? dayjs(booking.apptDate).format('h:mm A') : 'N/A',
-          'Amount': formattedAmount, 
-          'Status': tx.status || 'N/A',
-          'Payment': paymentMethod?.method 
-            ? `${paymentMethod.method} (${paymentMethod.name?.slice(0, 4)}****)` 
-            : 'N/A',
-          'Transaction Date': tx.transactionDate ? dayjs(tx.transactionDate).format('MMM D, YYYY') : 'N/A',
+          ID: tx._id?.slice(-6) || "N/A",
+          User: tx.user?.slice(-6) || "N/A",
+          Campground: campground?.name || "N/A",
+          Date: booking?.apptDate
+            ? dayjs(booking.apptDate).format("MMM D, YYYY")
+            : "N/A",
+          Time: booking?.apptDate
+            ? dayjs(booking.apptDate).format("h:mm A")
+            : "N/A",
+          Amount: formattedAmount,
+          Status: tx.status || "N/A",
+          Payment: paymentMethod?.method
+            ? `${paymentMethod.method} (${paymentMethod.name?.slice(0, 4)}****)`
+            : "N/A",
+          "Transaction Date": tx.transactionDate
+            ? dayjs(tx.transactionDate).format("MMM D, YYYY")
+            : "N/A",
         };
       });
-  
+
       const headers = Object.keys(formattedData[0]);
-      const body = formattedData.map(tx => headers.map(header => tx[header]));
-  
+      const body = formattedData.map((tx) =>
+        headers.map((header) => tx[header as keyof typeof tx]),
+      );
+
       const pageWidth = doc.internal.pageSize.getWidth();
-      
+
       const columnWidths = {
         0: 40, // ID
         1: 40, // User
@@ -106,33 +135,36 @@ function TransactionTable() {
         7: 90, // Payment
         8: 60, // Transaction Date
       };
-      
-      const totalWidth = Object.values(columnWidths).reduce((sum, width) => sum + width, 0);
+
+      const totalWidth = Object.values(columnWidths).reduce(
+        (sum, width) => sum + width,
+        0,
+      );
       const leftMargin = Math.max(40, (pageWidth - totalWidth) / 2);
-      
+
       autoTable(doc, {
         startY: 50,
         head: [headers],
         body: body,
-        theme: 'striped',
-        styles: { 
+        theme: "striped",
+        styles: {
           lineWidth: 1,
           lineColor: [100, 100, 100],
           fontSize: 8,
           cellPadding: 4,
-          overflow: 'linebreak',
+          overflow: "linebreak",
           minCellHeight: 8,
-          halign: 'center',
-          valign: 'middle'
+          halign: "center",
+          valign: "middle",
         },
-        headStyles: { 
+        headStyles: {
           fillColor: [44, 62, 80],
           textColor: 255,
-          fontStyle: 'bold',
-          halign: 'center'
+          fontStyle: "bold",
+          halign: "center",
         },
         alternateRowStyles: {
-          fillColor: [245, 245, 245]
+          fillColor: [245, 245, 245],
         },
         columnStyles: {
           0: { cellWidth: columnWidths[0] }, // ID
@@ -140,7 +172,7 @@ function TransactionTable() {
           2: { cellWidth: columnWidths[2] }, // Campground
           3: { cellWidth: columnWidths[3] }, // Date
           4: { cellWidth: columnWidths[4] }, // Time
-          5: { cellWidth: columnWidths[5], halign: 'right' }, // Amount
+          5: { cellWidth: columnWidths[5], halign: "right" }, // Amount
           6: { cellWidth: columnWidths[6] }, // Status
           7: { cellWidth: columnWidths[7] }, // Payment
           8: { cellWidth: columnWidths[8] }, // Transaction Date
@@ -152,46 +184,57 @@ function TransactionTable() {
           doc.text(
             `Page ${data.pageNumber}`,
             doc.internal.pageSize.getWidth() - 40,
-            doc.internal.pageSize.getHeight() - 10
+            doc.internal.pageSize.getHeight() - 10,
           );
-        }
+        },
       });
-  
-      const totalAmount = transactions.reduce((sum, tx) => sum + Number(tx.amount || 0), 0);
+
+      const totalAmount = transactions.reduce(
+        (sum, tx) => sum + Number(tx.amount || 0),
+        0,
+      );
       const lastY = (doc as any).lastAutoTable.finalY || 50;
-  
+
       doc.setFontSize(10);
       doc.setTextColor(44, 62, 80);
-      doc.setFont('helvetica', 'bold');
-      doc.text('Summary', leftMargin, lastY + 20);
-  
+      doc.setFont("helvetica", "bold");
+      doc.text("Summary", leftMargin, lastY + 20);
+
       doc.setDrawColor(22, 160, 133);
       doc.setLineWidth(0.5);
       doc.line(leftMargin, lastY + 22, leftMargin + 80, lastY + 22);
-  
+
       doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      doc.text(`• Total Transactions: ${transactions.length}`, leftMargin, lastY + 35);
-      doc.text('• Total Amount:', leftMargin, lastY + 45);
-      
-      const formattedTotalAmount = totalAmount.toLocaleString('en-US');
-      doc.text(`${formattedTotalAmount} THB`, leftMargin + 65, lastY + 45, { align: 'left' });
-  
-      const statusCounts = transactions.reduce((acc, tx) => {
-        const status = tx.status || 'Unknown';
-        acc[status] = (acc[status] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
-  
+      doc.setFont("helvetica", "normal");
+      doc.text(
+        `• Total Transactions: ${transactions.length}`,
+        leftMargin,
+        lastY + 35,
+      );
+      doc.text("• Total Amount:", leftMargin, lastY + 45);
+
+      const formattedTotalAmount = totalAmount.toLocaleString("en-US");
+      doc.text(`${formattedTotalAmount} THB`, leftMargin + 65, lastY + 45, {
+        align: "left",
+      });
+
+      const statusCounts = transactions.reduce(
+        (acc, tx) => {
+          const status = tx.status || "Unknown";
+          acc[status] = (acc[status] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
+
       let statusY = lastY + 55;
       for (const [status, count] of Object.entries(statusCounts)) {
         const percent = Math.round((count / transactions.length) * 100);
         doc.text(`• ${status}: ${count} (${percent}%)`, leftMargin, statusY);
         statusY += 10;
       }
-  
-      doc.save(`transactions-report-${dayjs().format('YYYY-MM-DD-HHmm')}.pdf`);
-  
+
+      doc.save(`transactions-report-${dayjs().format("YYYY-MM-DD-HHmm")}.pdf`);
     } catch (err) {
       console.error("Failed to download PDF:", err);
       alert("Failed to download transactions PDF");
@@ -199,9 +242,9 @@ function TransactionTable() {
       setIsDownloading(false);
     }
   };
-  
+
   const safeParseJSON = (value: any) => {
-    if (typeof value !== 'string') return value;
+    if (typeof value !== "string") return value;
     try {
       return JSON.parse(value);
     } catch {
@@ -211,19 +254,22 @@ function TransactionTable() {
 
   const handleDownloadCSV = async () => {
     if (!session?.user.token) return;
-    
+
     try {
       setIsDownloading(true);
       const csvData = await downloadTransaction(session.user.token);
-      
-      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', `transactions-${dayjs().format('YYYY-MM-DD')}.csv`);
+      link.setAttribute(
+        "download",
+        `transactions-${dayjs().format("YYYY-MM-DD")}.csv`,
+      );
       document.body.appendChild(link);
       link.click();
-      
+
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (err) {
@@ -311,28 +357,29 @@ function TransactionTable() {
         </tbody>
       </table>
       <div className="flex justify-center my-6 space-x-4">
-  <button
-    onClick={handleDownloadCSV}
-    disabled={isDownloading}
-    className={`${
-      isDownloading ? "bg-green-400" : "bg-green-600 hover:bg-green-700"
-    } text-white font-semibold py-2 px-4 rounded flex items-center`}
-  >
-    {isDownloading ? "Downloading..." : "Download CSV"}
-  </button>
+        <button
+          onClick={handleDownloadCSV}
+          disabled={isDownloading}
+          className={`${
+            isDownloading ? "bg-green-400" : "bg-green-600 hover:bg-green-700"
+          } text-white font-semibold py-2 px-4 rounded flex items-center`}
+        >
+          {isDownloading ? "Downloading..." : "Download CSV"}
+        </button>
 
-  <button
-    onClick={handleDownloadPDF}
-    disabled={isDownloading}
-    className={`${
-      isDownloading ? "bg-green-400" : "bg-green-600 hover:bg-green-700"
-    } text-white font-semibold py-2 px-4 rounded flex items-center`}
-  >
-    {isDownloading ? "Downloading..." : "Download PDF"}
-  </button>
-</div>
+        <button
+          onClick={handleDownloadPDF}
+          disabled={isDownloading}
+          className={`${
+            isDownloading ? "bg-green-400" : "bg-green-600 hover:bg-green-700"
+          } text-white font-semibold py-2 px-4 rounded flex items-center`}
+        >
+          {isDownloading ? "Downloading..." : "Download PDF"}
+        </button>
+      </div>
     </div>
   );
 }
 
 export default TransactionTable;
+

@@ -1,62 +1,100 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { addPaymentMethod } from '@/libs/addPaymentMethod';
-import { PaymentMethod as PaymentMethodType } from '../../interface';
+import React, { useState } from "react";
+import { addPaymentMethod } from "@/libs/addPaymentMethod";
+import { PaymentMethod as PaymentMethodType } from "../../interface";
 import { useSession } from "next-auth/react";
-import { CreditCard, Landmark, Hash } from 'lucide-react';
-import { TextField, Select, MenuItem, FormControl, Button } from '@mui/material';
+import { CreditCard, Landmark, Hash } from "lucide-react";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  Button,
+} from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 function AddPaymentMethod() {
   const { data: session } = useSession();
-  const [method, setMethod] = useState<"credit_card" | "bank_account" | "">("");
+  const [method, setMethod] = useState<
+    "credit_card" | "bank_account" | undefined
+  >(undefined);
   const [formData, setFormData] = useState({
-    name: '',
-    label: '',
-    cardNumber: '',
-    bankAccountNumber: '',
-    bankName: '',
+    name: "",
+    label: "",
+    cardNumber: "",
+    bankAccountNumber: "",
+    bankName: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<any>) => {
-    setFormData(prev => ({
+  const handleChange = (
+    event:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent<string>,
+  ) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const validBankNames = [
+      "KBank",
+      "SCB",
+      "BBL",
+      "Krungsri",
+      "KTB",
+      "TTB",
+      "BAAC",
+      "GSB",
+      "CIMB",
+      "UOB",
+    ] as const;
+
+    function isValidBankName(
+      name: any,
+    ): name is (typeof validBankNames)[number] {
+      return validBankNames.includes(name);
+    }
     const payload: Partial<PaymentMethodType> = {
       name: formData.name,
       method: method,
-      cardNumber: method === 'credit_card' ? formData.cardNumber : undefined,
-      bankAccountNumber: method === 'bank_account' ? formData.bankAccountNumber : undefined,
-      bankName: method === 'bank_account' ? formData.bankName : undefined,
+      cardNumber: method === "credit_card" ? formData.cardNumber : undefined,
+      bankAccountNumber:
+        method === "bank_account" ? formData.bankAccountNumber : undefined,
+      bankName:
+        method === "bank_account" && isValidBankName(formData.bankName)
+          ? formData.bankName
+          : undefined,
     };
 
     try {
       if (!session?.user.token) {
-        alert('No token found. Please log in.');
+        alert("No token found. Please log in.");
         return;
       }
-      const newPaymentMethod = await addPaymentMethod(payload, session?.user.token);
-      alert('Payment method added successfully');
-      console.log('Added payment method:', newPaymentMethod);
+      const newPaymentMethod = await addPaymentMethod(
+        payload,
+        session?.user.token,
+      );
+      alert("Payment method added successfully");
+      console.log("Added payment method:", newPaymentMethod);
 
       setFormData({
-        name: '',
-        label: '',
-        cardNumber: '',
-        bankAccountNumber: '',
-        bankName: '',
+        name: "",
+        label: "",
+        cardNumber: "",
+        bankAccountNumber: "",
+        bankName: "",
       });
-      setMethod('');
-
+      setMethod(undefined);
     } catch (err: any) {
       console.error(err);
-      alert(err.message || 'Failed to add payment method');
+      alert(err.message || "Failed to add payment method");
     }
   };
 
@@ -64,11 +102,15 @@ function AddPaymentMethod() {
     <div className="w-full p-8 bg-white rounded-xl shadow-lg border border-green-200">
       <div className="flex items-center justify-center mb-6">
         <CreditCard className="h-8 w-8 text-green-700 mr-3" />
-        <h2 className="text-2xl font-bold text-green-900">Add Payment Method</h2>
+        <h2 className="text-2xl font-bold text-green-900">
+          Add Payment Method
+        </h2>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-5"
+      >
         {/* Type */}
         <div className="space-y-1">
           <label className="flex items-center text-sm font-medium text-green-700">
@@ -82,7 +124,9 @@ function AddPaymentMethod() {
               displayEmpty
               className="bg-green-50 text-green-900 border border-green-300 rounded-md"
             >
-              <MenuItem value=""><span className='text-gray-400'>Select method</span></MenuItem>
+              <MenuItem value="">
+                <span className="text-gray-400">Select method</span>
+              </MenuItem>
               <MenuItem value="credit_card">Credit Card</MenuItem>
               <MenuItem value="bank_account">Bank Account</MenuItem>
             </Select>
@@ -106,7 +150,7 @@ function AddPaymentMethod() {
         </div>
 
         {/* Card Number */}
-        {method === 'credit_card' && (
+        {method === "credit_card" && (
           <div className="col-span-2 space-y-1">
             <label className="flex items-center text-sm font-medium text-green-700">
               <CreditCard className="mr-2 h-4 w-4" />
@@ -124,7 +168,7 @@ function AddPaymentMethod() {
         )}
 
         {/* Bank Account Details */}
-        {method === 'bank_account' && (
+        {method === "bank_account" && (
           <>
             <div className="space-y-1">
               <label className="flex items-center text-sm font-medium text-green-700">
@@ -154,7 +198,9 @@ function AddPaymentMethod() {
                   displayEmpty
                   className="bg-green-50 text-green-900 border border-green-300 rounded-md"
                 >
-                  <MenuItem value=""><span className='text-gray-400'>Select bank</span></MenuItem>
+                  <MenuItem value="">
+                    <span className="text-gray-400">Select bank</span>
+                  </MenuItem>
                   <MenuItem value="KBank">KBank</MenuItem>
                   <MenuItem value="SCB">SCB</MenuItem>
                   <MenuItem value="BBL">BBL</MenuItem>
@@ -178,7 +224,7 @@ function AddPaymentMethod() {
             type="submit"
             fullWidth
             variant="contained"
-            style={{ backgroundColor: '#16A34A', color: '#fff' }}
+            style={{ backgroundColor: "#16A34A", color: "#fff" }}
           >
             Submit
           </Button>

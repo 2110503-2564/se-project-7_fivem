@@ -1,13 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
 import DateReserve from "@/components/DateReserve";
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import updateBooking from "@/libs/updateBooking";
-import { CircularProgress } from "@mui/material";
-import { Tent, Calendar, ArrowLeft } from "lucide-react";
+import getCampgrounds from "@/libs/getCampgrounds";
+import getBooking from "@/libs/getBooking";
+import { Select, MenuItem, CircularProgress } from "@mui/material";
+import { CampgroundItem, BookingItem } from "../../../../../interface";
+import { Tent, Calendar, MapPin, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export default function EditBookingPage() {
@@ -16,13 +19,46 @@ export default function EditBookingPage() {
   const params = useParams();
   const bookingid = params.bookingid as string;
   const [date, setDate] = useState<Dayjs | null>(null);
+  const [campgrounds, setCampgrounds] = useState<CampgroundItem[]>([]);
+  const [currentBooking, setCurrentBooking] = useState<BookingItem | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [initialLoading, setInitialLoading] = useState(false); // ไม่มีโหลดอะไรแล้ว
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!session?.user.token) return;
+
+      try {
+        const [campgroundsResponse, bookingResponse] = await Promise.all([
+          getCampgrounds(),
+          getBooking(bookingid, session.user.token),
+        ]);
+
+        setCampgrounds(campgroundsResponse.data);
+        setCurrentBooking(bookingResponse.data);
+
+        // Set initial values from current booking
+        if (bookingResponse.data) {
+          setDate(dayjs(bookingResponse.data.apptDate));
+        }
+
+        setInitialLoading(false);
+      } catch (error) {
+        console.error("Failed to load data:", error);
+        setError("Failed to load required data");
+        setInitialLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [bookingid, session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!bookingid || !session?.user.token || !date) {
+    if (!bookingid || !session?.user.token || !date || !currentBooking) {
       setError("Please fill all required fields");
       return;
     }
@@ -40,6 +76,7 @@ export default function EditBookingPage() {
         bookingid,
         {
           apptDate: date.toISOString(),
+          campground: currentBooking.campground._id,
         },
         session.user.token,
       );
@@ -52,6 +89,17 @@ export default function EditBookingPage() {
       setLoading(false);
     }
   };
+
+  if (initialLoading) {
+    return (
+      <div className="min-h-screen bg-green-50 flex items-center justify-center">
+        <div className="text-center">
+          <CircularProgress className="text-green-700" />
+          <p className="mt-4 text-green-800">Loading booking information...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-50 to-green-100 text-gray-800 p-4 flex items-center justify-center">

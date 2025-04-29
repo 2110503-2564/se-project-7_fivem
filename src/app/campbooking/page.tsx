@@ -23,7 +23,8 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [selectedCampground, setSelectedCampground] = useState<CampgroundItem | null>(null);
+  const [selectedCampground, setSelectedCampground] =
+    useState<CampgroundItem | null>(null);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const [paymentMethodId, setPaymentMethodId] = useState<string>("");
 
@@ -49,8 +50,13 @@ export default function Page() {
     };
 
     const fetchPaymentMethods = async () => {
+      if (!session?.user.token) {
+        setError("User token is missing");
+        return;
+      }
+
       try {
-        const response = await getPaymentMethods(session?.user.token);
+        const response = await getPaymentMethods(session.user.token);
         setPaymentMethods(response);
       } catch (err) {
         setError("Failed to fetch payment methods");
@@ -96,7 +102,7 @@ export default function Page() {
         campgroundId,
         session.user._id,
         session.user.token,
-        paymentMethodId
+        paymentMethodId,
       );
 
       router.push("/mybooking");
@@ -118,17 +124,19 @@ export default function Page() {
   };
 
   return (
-    <main className="w-full min-h-screen flex flex-col items-center justify-center bg-green-50 bg-cover bg-center bg-fixed p-4"
+    <main
+      className="w-full min-h-screen flex flex-col items-center justify-center bg-green-50 bg-cover bg-center bg-fixed p-4"
       style={{ backgroundImage: "url('/img/camp-bg.jpg')" }}
     >
       <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-8 w-full max-w-md border border-green-200">
         <div className="flex flex-col items-center mb-6">
           <Image
-            src='/img/logo.png'
+            src="/img/logo.png"
             alt="logo"
             width={24}
             height={24}
-            className="h-10 w-10 mb-2" />
+            className="h-10 w-10 mb-2"
+          />
           <h1 className="text-2xl font-bold text-center text-green-900">
             Reserve Your Campsite
           </h1>
@@ -189,20 +197,25 @@ export default function Page() {
               <Select
                 variant="outlined"
                 fullWidth
-                  value={paymentMethodId}
-                  onChange={(e) => setPaymentMethodId(e.target.value)}
-                  className="bg-green-50 text-green-900 border border-green-300 rounded-md"
-                >
-                  <MenuItem value="" disabled>
-                    Choose your payment method
+                value={paymentMethodId}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value !== undefined) {
+                    setPaymentMethodId(value);
+                  }
+                }}
+                className="bg-green-50 text-green-900 border border-green-300 rounded-md"
+              >
+                <MenuItem value="" disabled>
+                  Choose your payment method
+                </MenuItem>
+                {paymentMethods.map((pm) => (
+                  <MenuItem key={pm._id} value={pm._id}>
+                    {pm.name}
                   </MenuItem>
-                  {paymentMethods.map((pm) => (
-                    <MenuItem key={pm._id} value={pm._id}>
-                      {pm.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </div>
+                ))}
+              </Select>
+            </div>
 
             <div className="mb-6">
               <div className="flex items-center mb-2 text-sm text-green-700">
@@ -221,14 +234,14 @@ export default function Page() {
               />
             </div>
 
-
             <button
               onClick={handleBooking}
               disabled={submitting || !campgroundId || !bookDate}
-              className={`w-full py-3 rounded-lg shadow-md font-medium text-white transition-all duration-300 ${submitting || !campgroundId || !bookDate
+              className={`w-full py-3 rounded-lg shadow-md font-medium text-white transition-all duration-300 ${
+                submitting || !campgroundId || !bookDate
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
-                }`}
+              }`}
             >
               {submitting ? (
                 <CircularProgress size={24} className="text-white" />
@@ -242,3 +255,4 @@ export default function Page() {
     </main>
   );
 }
+

@@ -54,7 +54,7 @@ export interface BookingUpdateResponse {
 
 export interface UpdateBookingData {
   apptDate: string;
-  campground: string;
+  campground?: string;
 }
 
 export interface User {
@@ -111,4 +111,3 @@ export interface Transaction {
 export interface CampgroundWithBookings extends CampgroundItem {
   bookings: BookingItem[];
 }
-
