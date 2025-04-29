@@ -2,10 +2,9 @@ import getCampgrounds from "@/libs/getCampgrounds";
 import CampgroundCatalog from "@/components/CampgroundCatalog";
 import { Suspense } from "react";
 import { LinearProgress } from "@mui/material";
-import getCampgroundsSever from "@/libs/getCampgrundsClinent";
 
 export default function CampgroundPage() {
-  const campgrounds = getCampgroundsSever();
+  const campgrounds = getCampgrounds();
 
   return (
     <>

@@ -10,6 +10,7 @@ export default async function getCampground(
         headers: {
           "Content-Type": "application/json",
         },
+        cache: "no-store",
       },
     );
 
