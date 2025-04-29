@@ -1,0 +1,70 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NEXTAUTH_URL=http://frontend:3000
+      - NEXTAUTH_SECRET=Ey7nTKnggBc0bRN8WUjyShw2qzOZ6KW4fUyqcKBePxY=
+      - BACKEND_URL=http://backend:5003
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:5003
+      - FRONTEND_URL=http://frontend:3000
+      - NEXT_PUBLIC_FRONTEND_URL=http://localhost:3000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+    command: npm run dev
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5003"
+    environment:
+      - PORT=5003
+      - NODE_ENV=dev
+      - MONGO_URI=mongodb+srv://Cochapat:iw0ntkeepchasingghosts@project.x2eog.mongodb.net/Project?retryWrites=true&w=majority&appName=Project
+      - JWT_SECRET=asdfjkl;;lkjfdsa
+      - JWT_EXPIRE=30d
+      - JWT_COOKIE_EXPIRE=30
+      - CORS_ORIGIN=http://localhost:3000
+    command: npm run dev
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+
+  frontend-test:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: npm test
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: npm run test-coverage
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
