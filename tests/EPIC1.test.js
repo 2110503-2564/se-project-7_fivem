@@ -58,7 +58,7 @@ test('US1-1 (Create Campground) : AC2', async ({ page }) => {
   await page.getByRole('link', { name: 'Manage Campground' }).click();
 
   // Fill all fields once
-  await page.locator('input[name="name"]').fill('Test Campground Creation');
+  await page.locator('input[name="name"]').fill('Test');
   await page.locator('input[name="address"]').fill('US1');
   await page.locator('input[name="district"]').fill('1');
   await page.locator('input[name="province"]').fill('AC2');
@@ -72,7 +72,7 @@ test('US1-1 (Create Campground) : AC2', async ({ page }) => {
     await page.locator('input[name="name"]').fill('');
     await page.getByRole('button', { name: 'Create Campground' }).click();
     await expect(page.getByText('All fields are required')).toBeVisible();
-    await page.locator('input[name="name"]').fill('Test Campground Creation');
+    await page.locator('input[name="name"]').fill('Test');
   });
 
   await test.step('Address field is blank', async () => {
@@ -200,7 +200,7 @@ test('US1-2 (Update Campground) : AC2', async ({ page }) => {
   await page.getByRole('option', { name: 'Edit' }).click();
 
   // Fill normally once
-  await page.locator('input[name="name"]').fill('Test Campground Update');
+  await page.locator('input[name="name"]').fill('Test');
   await page.locator('input[name="address"]').fill('US1');
   await page.locator('input[name="district"]').fill('2');
   await page.locator('input[name="province"]').fill('AC2');
@@ -212,7 +212,7 @@ test('US1-2 (Update Campground) : AC2', async ({ page }) => {
     await page.locator('input[name="name"]').fill('');
     await page.getByRole('button', { name: 'Update' }).click();
     await expect(page.getByText('Failed to update campground')).toBeVisible();
-    await page.locator('input[name="name"]').fill('Test Campground Update');
+    await page.locator('input[name="name"]').fill('Test');
   });
 
   await test.step('Address field is blank', async () => {
